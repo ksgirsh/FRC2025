@@ -7,6 +7,7 @@ package frc.robot;
 import static edu.wpi.first.units.Units.*;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
+import com.ctre.phoenix6.swerve.SwerveModule.SteerRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -32,8 +33,15 @@ public class RobotContainer {
             .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
 
+
     //syoma testing
-    private final SwerveRequest.FieldCentricFacingAngle headingRequest = new SwerveRequest.FieldCentricFacingAngle();
+    
+    private final SwerveRequest.FieldCentricFacingAngle headingRequest = new SwerveRequest.FieldCentricFacingAngle()
+            .withDeadband(MaxSpeed * 0.03) // Add a 3% deadband to translation
+            .withDriveRequestType(DriveRequestType.Velocity)
+            .withSteerRequestType(SteerRequestType.MotionMagicExpo)
+
+    ;
 
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
@@ -69,7 +77,18 @@ public class RobotContainer {
         );
 
         // syom test for auto gyro heading
+        Rotation2d targetHeading = new Rotation2d(0); // in radians
+        headingRequest.HeadingController.setP(9.0);
+        headingRequest.HeadingController.setD(1.5);
 
+        joystick.x().whileTrue(
+            drivetrain.applyRequest(() -> 
+                headingRequest.withVelocityX(-joystick.getLeftY() * MaxSpeed)
+                    .withVelocityY(-joystick.getLeftX() * MaxSpeed)
+                    .withTargetDirection(targetHeading)
+            )
+
+        );
 
         
         // Example: Use FieldCentricFacingAngle to move and face a specific direction 
