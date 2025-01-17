@@ -80,24 +80,46 @@ public class RobotContainer {
         Rotation2d targetHeading = new Rotation2d(0); // in radians
         headingRequest.HeadingController.setP(9.0);
         headingRequest.HeadingController.setD(1.5);
+        joystick.y().whileTrue(
+            drivetrain.applyRequest(() -> 
+            headingRequest.withVelocityX(-joystick.getLeftY() * MaxSpeed)
+                .withVelocityY(-joystick.getLeftX() * MaxSpeed)
+                .withTargetDirection(new Rotation2d(0)) // 0 radians (facing forward)
+            )
+        );
 
         joystick.x().whileTrue(
             drivetrain.applyRequest(() -> 
-                headingRequest.withVelocityX(-joystick.getLeftY() * MaxSpeed)
-                    .withVelocityY(-joystick.getLeftX() * MaxSpeed)
-                    .withTargetDirection(targetHeading)
+            headingRequest.withVelocityX(-joystick.getLeftY() * MaxSpeed)
+                .withVelocityY(-joystick.getLeftX() * MaxSpeed)
+                .withTargetDirection(new Rotation2d(Math.PI / 2)) // π/2 radians (facing left)
             )
+        );
 
+        joystick.a().whileTrue(
+            drivetrain.applyRequest(() -> 
+            headingRequest.withVelocityX(-joystick.getLeftY() * MaxSpeed)
+                .withVelocityY(-joystick.getLeftX() * MaxSpeed)
+                .withTargetDirection(new Rotation2d(Math.PI)) // π radians (facing backward)
+            )
+        );
+
+        joystick.b().whileTrue(
+            drivetrain.applyRequest(() -> 
+            headingRequest.withVelocityX(-joystick.getLeftY() * MaxSpeed)
+                .withVelocityY(-joystick.getLeftX() * MaxSpeed)
+                .withTargetDirection(new Rotation2d(3 * Math.PI / 2)) // 3π/2 radians (facing right)
+            )
         );
 
         
-        // Example: Use FieldCentricFacingAngle to move and face a specific direction 
 
+        // ong we dont need this shit wtf is breaking 
 
-        joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
-        joystick.b().whileTrue(drivetrain.applyRequest(() ->
-            point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
-        ));
+        // joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
+        // joystick.b().whileTrue(drivetrain.applyRequest(() ->
+        //     point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
+        // ));
 
         joystick.pov(0).whileTrue(drivetrain.applyRequest(() ->
             forwardStraight.withVelocityX(0.5).withVelocityY(0))
