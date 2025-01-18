@@ -16,12 +16,11 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-  NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
-
+  
   private final RobotContainer m_robotContainer;
+  private final NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
 
   public Robot() {
-    
     m_robotContainer = new RobotContainer();
   }
 
@@ -34,7 +33,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run(); 
-
+    System.out.println(limelightTable.getEntry("tx").getFloat(0.0f));
     
   }
 
