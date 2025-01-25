@@ -70,9 +70,9 @@
               "Controls/Show controls": true,
               "Controls/Rotation": "NONE",
               "compression": -1.0,
-              "fps": -1,
-              "imageWidth": 0,
-              "imageHeight": 0
+              "fps": 30,
+              "imageWidth": 320,
+              "imageHeight": 240
             }
           },
           "3,0": {
@@ -91,9 +91,22 @@
               "Controls/Show controls": true,
               "Controls/Rotation": "NONE",
               "compression": -1.0,
-              "fps": -1,
-              "imageWidth": 0,
-              "imageHeight": 0
+              "fps": 22,
+              "imageWidth": 320,
+              "imageHeight": 240
+            }
+          },
+          "9,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Network Table Tree",
+              "_source0": "network_table:///SmartDashboard/DB",
+              "_title": "/SmartDashboard/DB",
+              "_glyph": 148,
+              "_showGlyph": false
             }
           }
         }
@@ -114,9 +127,9 @@
     }
   ],
   "windowGeometry": {
-    "x": 0.0,
-    "y": 0.0,
-    "width": 1536.0,
-    "height": 912.0
+    "x": -123.33333587646484,
+    "y": 12.0,
+    "width": 1297.3333740234375,
+    "height": 737.3333129882812
   }
 }

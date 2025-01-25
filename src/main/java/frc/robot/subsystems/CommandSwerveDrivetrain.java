@@ -122,8 +122,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
      * the devices themselves. If they need the devices, they can access them through
      * getters in the classes.
      *
-     * @param drivetrainConstants Drivetrain-wide constants for the swerve drive
-     * @param modules             Constants for each specific module
+     * @param drivetrainConstants    Drivetrain-wide constants for the swerve drive
+     * @param modules                Constants for each specific module
      */
     public CommandSwerveDrivetrain(
         SwerveDrivetrainConstants drivetrainConstants,
@@ -173,11 +173,11 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
      *                                   unspecified or set to 0 Hz, this is 250 Hz on
      *                                   CAN FD, and 100 Hz on CAN 2.0.
      * @param odometryStandardDeviation  The standard deviation for odometry calculation
-     *                                  in the form [x, y, theta]ᵀ, with units in meters
-     *                                  and radians
-     * @param visionStandardDeviation   The standard deviation for vision calculation
-     *                                  in the form [x, y, theta]ᵀ, with units in meters
-     *                                  and radians
+     *                                   in the form [x, y, theta]ᵀ, with units in meters
+     *                                   and radians
+     * @param visionStandardDeviation    The standard deviation for vision calculation
+     *                                   in the form [x, y, theta]ᵀ, with units in meters
+     *                                   and radians
      * @param modules                    Constants for each specific module
      */
     public CommandSwerveDrivetrain(
