@@ -14,6 +14,8 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.HttpCamera;
+
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
@@ -24,6 +26,7 @@ public class Robot extends TimedRobot {
   public Robot() {
     m_robotContainer = new RobotContainer();
     CameraServer.startAutomaticCapture();
+    CameraServer.addCamera(new HttpCamera("limelight", "http://10.59.68.11:5800/stream.mjpg", HttpCamera.HttpCameraKind.kMJPGStreamer));
   }
 
   @Override
@@ -35,8 +38,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run(); 
-    System.out.println(limelightTable.getEntry("tx").getFloat(0.0f));
-    
+    // System.out.println(limelightTable.getEntry("tx").getFloat(0.0f));
   }
 
   @Override
