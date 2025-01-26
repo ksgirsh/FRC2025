@@ -47,6 +47,9 @@ public class Robot extends TimedRobot {
     StatusSignal<Angle> yaw = _pigeon.getYaw();
     SmartDashboard.putNumber("yaw", -yaw.getValueAsDouble());
     // System.out.println(limelightTable.getEntry("tx").getFloat(0.0f));
+
+  //GEORGE DO NOT WRITE THE LIME LIGH CODE IN ROBOT.JAVA PLEAAAAAAASE DO NOT DO IT.
+  // use the limelightAllignment.java and robot container
   }
 
   @Override
