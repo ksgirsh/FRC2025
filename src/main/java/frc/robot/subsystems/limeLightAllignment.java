@@ -5,15 +5,23 @@
 package frc.robot.subsystems;
 
 import java.io.ObjectInputFilter.Config;
+import java.security.PublicKey;
 
+import com.ctre.phoenix6.swerve.SwerveRequest;
+
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.LimelightHelpers;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
+
 public class limeLightAllignment extends SubsystemBase {
 
   private CommandSwerveDrivetrain drivetrain;
+  private final SwerveRequest.RobotCentric robotCentricRequest = new SwerveRequest.RobotCentric();
+  private Boolean run = false;
+  private double xSpeed;
 
   /** Creates a new limeLightAllignment. */
   public limeLightAllignment() {}
@@ -56,7 +64,7 @@ public class limeLightAllignment extends SubsystemBase {
           //rot = rot_limelight;
   
           final var forward_limelight = limelight_range_proportional(MaxSpeed);
-          //xSpeed = forward_limelight;
+          xSpeed = forward_limelight;
   
           //while using Limelight, turn off field-relative driving.
           //fieldRelative = false;
@@ -66,7 +74,12 @@ public class limeLightAllignment extends SubsystemBase {
 
   @Override
   public void periodic() {
-    //add shit here
-  drivetrain.applyRequest(null);
+    if (run){
+      drivetrain.applyRequest(() ->
+      robotCentricRequest.withVelocityX(xSpeed).withVelocityY(0)
+      );
+      
+    }
+  
   }
 }
