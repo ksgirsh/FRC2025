@@ -17,10 +17,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-
+import frc.robot.commands.RoboSingCommand;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.RoboSingSubsytem;
 
 
 
@@ -35,14 +37,15 @@ public class RobotContainer {
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
 
 
-    //syoma testing
-    
+    //syom auto heading
     private final SwerveRequest.FieldCentricFacingAngle headingRequest = new SwerveRequest.FieldCentricFacingAngle()
-            .withDeadband(MaxSpeed * 0.03) // Add a 3% deadband to translation
+            .withDeadband(MaxSpeed * 0.05) // Add a 3% deadband to translation
             .withDriveRequestType(DriveRequestType.Velocity)
             .withSteerRequestType(SteerRequestType.MotionMagicExpo)
 
     ;
+
+    
 
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
@@ -54,6 +57,11 @@ public class RobotContainer {
     private final CommandXboxController joystick = new CommandXboxController(0);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+
+
+    //syom sing intialize
+    public final RoboSingSubsytem roboSingSubsytem = new RoboSingSubsytem();
+    // private final RoboSingCommand singCommand = new RoboSingCommand(roboSing);
 
     /* Path follower */
     private final SendableChooser<Command> autoChooser;
@@ -77,10 +85,18 @@ public class RobotContainer {
             )
         );
 
+        //syom sing
+
+        joystick.pov(90).onTrue(roboSingSubsytem.playRock());
+
+
+
         // syom test for auto gyro heading
         Rotation2d targetHeading = new Rotation2d(0); // in radians
-        headingRequest.HeadingController.setP(9.0);
-        headingRequest.HeadingController.setD(1.5);
+        headingRequest.HeadingController.setP(7.0);
+        headingRequest.HeadingController.setI(0.0001);
+        headingRequest.HeadingController.setD(1.2);
+
         joystick.y().whileTrue(
             drivetrain.applyRequest(() -> 
             headingRequest.withVelocityX(-joystick.getLeftY() * MaxSpeed)
@@ -112,7 +128,6 @@ public class RobotContainer {
                 .withTargetDirection(new Rotation2d(3 * Math.PI / 2)) // 3π/2 radians (facing right)
             )
         );
-
         
 
         // ong we dont need this shit wtf is breaking 
