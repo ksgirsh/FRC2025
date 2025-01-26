@@ -26,10 +26,12 @@ import frc.robot.subsystems.RoboSingSubsytem;
 
 
 
-
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
+
+    //syom auto heading
+    private double targetHeading = 0; // in radians
 
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
@@ -57,6 +59,8 @@ public class RobotContainer {
     private final CommandXboxController joystick = new CommandXboxController(0);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+
+
 
 
     //syom sing intialize
@@ -92,43 +96,41 @@ public class RobotContainer {
 
 
         // syom test for auto gyro heading
-        Rotation2d targetHeading = new Rotation2d(0); // in radians
         headingRequest.HeadingController.setP(7.0);
         headingRequest.HeadingController.setI(0.0001);
         headingRequest.HeadingController.setD(1.2);
 
+        // syoma schminga binga code sets target autoHeadingAngle nside CommandSwerveSubsytem but only executes trunig to that yaw on press of right bumper(code below joystck.a ,b,x,y onTrue
         joystick.y().whileTrue(
-            drivetrain.applyRequest(() -> 
-            headingRequest.withVelocityX(-joystick.getLeftY() * MaxSpeed)
-                .withVelocityY(-joystick.getLeftX() * MaxSpeed)
-                .withTargetDirection(new Rotation2d(0)) // 0 radians (facing forward)
-            )
+            drivetrain.runOnce(() -> targetHeading = 0) // 0 radians (facing forward)
         );
 
         joystick.x().whileTrue(
-            drivetrain.applyRequest(() -> 
-            headingRequest.withVelocityX(-joystick.getLeftY() * MaxSpeed)
-                .withVelocityY(-joystick.getLeftX() * MaxSpeed)
-                .withTargetDirection(new Rotation2d(Math.PI / 2)) // π/2 radians (facing left)
-            )
+            drivetrain.runOnce(() -> targetHeading = Math.PI / 2) // π/2 radians (facing left)
         );
 
         joystick.a().whileTrue(
-            drivetrain.applyRequest(() -> 
-            headingRequest.withVelocityX(-joystick.getLeftY() * MaxSpeed)
-                .withVelocityY(-joystick.getLeftX() * MaxSpeed)
-                .withTargetDirection(new Rotation2d(Math.PI)) // π radians (facing backward)
-            )
+            drivetrain.runOnce(() -> targetHeading = Math.PI) // π radians (facing backward)
         );
 
         joystick.b().whileTrue(
+            drivetrain.runOnce(() -> targetHeading = 3 * Math.PI / 2) // 3π/2 radians (facing right)
+        );
+
+
+
+        joystick.rightBumper().whileTrue(
             drivetrain.applyRequest(() -> 
             headingRequest.withVelocityX(-joystick.getLeftY() * MaxSpeed)
                 .withVelocityY(-joystick.getLeftX() * MaxSpeed)
-                .withTargetDirection(new Rotation2d(3 * Math.PI / 2)) // 3π/2 radians (facing right)
-            )
+                .withTargetDirection(new Rotation2d(targetHeading)))
         );
         
+        // Log a message to the console when the right trigger is pressed
+        joystick.rightTrigger().onTrue(
+            drivetrain.runOnce(() -> System.out.println("Right trigger pressed linga vbinga oonga boonga"))
+        );
+
 
         // ong we dont need this shit wtf is breaking 
 
