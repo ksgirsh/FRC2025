@@ -13,10 +13,12 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.RoboSingCommand;
@@ -32,6 +34,7 @@ public class RobotContainer {
 
     //syom auto heading
     private double targetHeading = 0; // in radians
+
 
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
@@ -57,6 +60,9 @@ public class RobotContainer {
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
     private final CommandXboxController joystick = new CommandXboxController(0);
+
+    Joystick buttonBoard = new Joystick(1);
+     private final JoystickButton button1 = new JoystickButton(buttonBoard, 1);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
@@ -101,6 +107,7 @@ public class RobotContainer {
         headingRequest.HeadingController.setD(1.2);
 
         // syoma schminga binga code sets target autoHeadingAngle nside CommandSwerveSubsytem but only executes trunig to that yaw on press of right bumper(code below joystck.a ,b,x,y onTrue
+        
         joystick.y().whileTrue(
             drivetrain.runOnce(() -> targetHeading = 0) // 0 radians (facing forward)
         );
@@ -109,11 +116,13 @@ public class RobotContainer {
             drivetrain.runOnce(() -> targetHeading = Math.PI / 2) // π/2 radians (facing left)
         );
 
-        joystick.a().whileTrue(
-            drivetrain.runOnce(() -> targetHeading = Math.PI) // π radians (facing backward)
+        //used to be a
+        new JoystickButton(buttonBoard, 1).onTrue(
+            drivetrain.runOnce(() -> targetHeading = Math.PI ) // π radians (facing backward)
         );
 
-        joystick.b().whileTrue(
+        //used to be b
+        new JoystickButton(buttonBoard, 2).onTrue(
             drivetrain.runOnce(() -> targetHeading = 3 * Math.PI / 2) // 3π/2 radians (facing right)
         );
 
