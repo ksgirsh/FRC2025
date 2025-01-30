@@ -14,7 +14,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.LimelightHelpers;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 
 public class limeLightAllignment extends SubsystemBase {
 
@@ -22,6 +23,8 @@ public class limeLightAllignment extends SubsystemBase {
   private final SwerveRequest.RobotCentric robotCentricRequest = new SwerveRequest.RobotCentric();
   private Boolean run = false;
   private double xSpeed;
+
+  private final NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
 
   /** Creates a new limeLightAllignment. */
   public limeLightAllignment() {}
@@ -57,6 +60,8 @@ public class limeLightAllignment extends SubsystemBase {
     return targetingForwardSpeed;
   }
 
+
+
   //later in robot container call schminga(MaxSpeed)
   public void schminga(double MaxSpeed) {
     //finish this shit then drivtetrain.applyRequest(xSpeed, ySPeed, rot .... blah blah blah)
@@ -71,13 +76,25 @@ public class limeLightAllignment extends SubsystemBase {
           
   }
   
+  private void driveAtTag(){
+    double[] camerapose_targetspace = limelightTable.getEntry("camerapose_targetspace").getDoubleArray(new double[6]);
+      double yawSpeed = camerapose_targetspace[4] * 0.01;
+      double xSpeed = camerapose_targetspace[0] * Math.cos(camerapose_targetspace[4] * 0.0174533) * -1;
+      double ySpeed = (camerapose_targetspace[2] * Math.sin(camerapose_targetspace[4] * 0.0174533) - 0.3);
+
+      drivetrain.applyRequest(() ->
+      robotCentricRequest.withVelocityX(xSpeed).withVelocityY(ySpeed).withRotationalRate(yawSpeed)
+      );
+  }
 
   @Override
   public void periodic() {
     if (run){
-      drivetrain.applyRequest(() ->
-      robotCentricRequest.withVelocityX(xSpeed).withVelocityY(0)
-      );
+      //Math
+      driveAtTag();
+      /*drivetrain.applyRequest(() ->
+      robotCentricRequest.withVelocityX(xSpeed).withVelocityY(ySpeed).withRotationalRate(yawSpeed)
+      );*/
       
     }
   
