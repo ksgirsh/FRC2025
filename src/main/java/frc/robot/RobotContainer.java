@@ -62,10 +62,24 @@ public class RobotContainer {
     private final CommandXboxController joystick = new CommandXboxController(0);
 
     Joystick buttonBoard = new Joystick(1);
-     private final JoystickButton button1 = new JoystickButton(buttonBoard, 1);
+    private final JoystickButton back = new JoystickButton(buttonBoard, 10);
+    private final JoystickButton right = new JoystickButton(buttonBoard, 11);
+    private final JoystickButton forward = new JoystickButton(buttonBoard, 12);
+    private final JoystickButton left = new JoystickButton(buttonBoard, 13);
+    
+
+    private final JoystickButton pos1 = new JoystickButton(buttonBoard, 1);
+    private final JoystickButton pos2 = new JoystickButton(buttonBoard, 2);
+    private final JoystickButton pos3 = new JoystickButton(buttonBoard, 3);
+    private final JoystickButton pos4 = new JoystickButton(buttonBoard, 4);
+    private final JoystickButton pos5 = new JoystickButton(buttonBoard, 5);
+    private final JoystickButton pos6 = new JoystickButton(buttonBoard, 6);
+    private final JoystickButton intakeL = new JoystickButton(buttonBoard, 7);
+    private final JoystickButton intakeR = new JoystickButton(buttonBoard, 8);
+    private final JoystickButton algaeProcessor = new JoystickButton(buttonBoard, 9);
+     
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
-
 
 
 
@@ -116,14 +130,88 @@ public class RobotContainer {
             drivetrain.runOnce(() -> targetHeading = Math.PI / 2) // π/2 radians (facing left)
         );
 
-        //used to be a
+        joystick.a().whileTrue(
+            drivetrain.runOnce(() -> targetHeading = Math.PI) // π radians (facing backward)
+        );
+
+        joystick.b().whileTrue(
+            drivetrain.runOnce(() -> targetHeading = 3 * Math.PI / 2) // 3π/2 radians (facing right)
+        );
+
+
+
+        // intakes
+        joystick.leftTrigger().whileTrue(
+            drivetrain.runOnce(() -> targetHeading = 2.2) // angle of left intake (rads)
+        );
+
+        joystick.rightTrigger().whileTrue(
+            drivetrain.runOnce(() -> targetHeading = 4.084) // angle of right intake (rads)
+        );
+
+
+
+        // 6 positions for reef (pos/button 1 is the side facing the drivers, go counter-clockwise):
+
         new JoystickButton(buttonBoard, 1).onTrue(
+            drivetrain.runOnce(() -> targetHeading = 0) // close
+        );
+
+        new JoystickButton(buttonBoard, 2).onTrue(
+            drivetrain.runOnce(() -> targetHeading = Math.PI / 3) // close right
+        );
+
+        new JoystickButton(buttonBoard, 3).onTrue(
+            drivetrain.runOnce(() -> targetHeading = 2 * Math.PI / 3) // far right
+        );
+
+        new JoystickButton(buttonBoard, 4).onTrue(
+            drivetrain.runOnce(() -> targetHeading = Math.PI) // far
+        );
+
+        new JoystickButton(buttonBoard, 5).onTrue(
+            drivetrain.runOnce(() -> targetHeading = 4 * Math.PI / 3) // far left
+        );
+
+        new JoystickButton(buttonBoard, 6).onTrue(
+            drivetrain.runOnce(() -> targetHeading = 5 * Math.PI / 3) // close left
+        );
+
+
+        // L/R intake & algae processor
+
+        new JoystickButton(buttonBoard, 7).onTrue(
+            drivetrain.runOnce(() -> targetHeading = 2.2) // left intake = face 126 degrees = 2.2 rads from forward 
+        );
+
+        new JoystickButton(buttonBoard, 8).onTrue(
+            drivetrain.runOnce(() -> targetHeading = 4.084) // right intake = face 234 degrees = 4.084 rads from forward
+        );
+
+        new JoystickButton(buttonBoard, 9).onTrue(
+            drivetrain.runOnce(() -> targetHeading = 3 * Math.PI / 2) // algae processor = face right
+        );
+
+
+
+        // face the 4 directions
+
+        //used to be a
+        new JoystickButton(buttonBoard, 10).onTrue(
             drivetrain.runOnce(() -> targetHeading = Math.PI ) // π radians (facing backward)
         );
 
         //used to be b
-        new JoystickButton(buttonBoard, 2).onTrue(
+        new JoystickButton(buttonBoard, 11).onTrue(
             drivetrain.runOnce(() -> targetHeading = 3 * Math.PI / 2) // 3π/2 radians (facing right)
+        );
+
+        new JoystickButton(buttonBoard, 12).onTrue(
+            drivetrain.runOnce(() -> targetHeading = Math.PI ) // π radians (facing forward)
+        );
+
+        new JoystickButton(buttonBoard, 13).onTrue(
+            drivetrain.runOnce(() -> targetHeading = 3 * Math.PI / 2) // 3π/2 radians (facing left)
         );
 
 
@@ -138,7 +226,7 @@ public class RobotContainer {
         // Log a message to the console when the right trigger is pressed
         joystick.rightTrigger().onTrue(
             drivetrain.runOnce(() -> System.out.println("Right trigger pressed linga vbinga oonga boonga"))
-        );
+        ); //make targetdirection reef, left targ direction intake. make xyab lrud, new 9 buttons objects
 
 
         // ong we dont need this shit wtf is breaking 
@@ -172,4 +260,4 @@ public class RobotContainer {
         /* Run the path selected from the auto chooser */
         return autoChooser.getSelected();
     }
-}   
+}
