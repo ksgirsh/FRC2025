@@ -118,7 +118,7 @@ public class RobotContainer {
         joystick.pov(90).onTrue(roboSingSubsytem.playRock());
 
         // george limelight 
-        joystick.pov(270).whileTrue(limelight.LimelightAlign());
+        joystick.pov(270).whileTrue(limelight.LimelightAlign(drivetrain));
 
 
 

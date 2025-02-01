@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import java.io.ObjectInputFilter.Config;
 import java.security.PublicKey;
 
+import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.wpilibj.XboxController;
@@ -22,28 +23,35 @@ import frc.robot.generated.TunerConstants;
 
 public class LimelightAlignment extends SubsystemBase {
 
-  private CommandSwerveDrivetrain drivetrain  = TunerConstants.createDrivetrain();
+  //private CommandSwerveDrivetrain drivetrain  = TunerConstants.createDrivetrain();
   private final SwerveRequest.RobotCentric robotCentricRequest = new SwerveRequest.RobotCentric();
   private Boolean run = false;
   private double xSpeed;
 
+  private final SwerveRequest.RobotCentric forwardStraight = new SwerveRequest.RobotCentric()
+            .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
+
   /** Creates a new LimelightAlignment. */
   public LimelightAlignment() {}
 
-  public Command LimelightAlign(){
-    return run(() -> this.driveAtTag());
+  public Command LimelightAlign(CommandSwerveDrivetrain drivetrain){
+    return run(() -> this.driveAtTag(drivetrain));
   }
   
   // George Code
-  private void driveAtTag(){
+  private void driveAtTag(CommandSwerveDrivetrain driveT){
       Pose3d cameraPose_TargetSpace = LimelightHelpers.getCameraPose3d_TargetSpace(""); // Camera's pose relative to tag (should use Robot's pose in the future)
-            
-      // double yawSpeed = camerapose_targetspace[4] * 0.01;
-      // double xSpeed = camerapose_targetspace[0] * Math.cos(camerapose_targetspace[4] * 0.0174533) * -1;
-      // double ySpeed = (camerapose_targetspace[2] * Math.sin(camerapose_targetspace[4] * 0.0174533) - 0.3);
-      // drivetrain.applyRequest(() ->
-      // robotCentricRequest.withVelocityX(xSpeed).withVelocityY(ySpeed).withRotationalRate(yawSpeed)
-      // );
+          
+      // when basing speed off offsets lets add an extra proportional term for each of these
+      double yawSpeed = cameraPose_TargetSpace.getRotation().getZ();
+      double xSpeed = cameraPose_TargetSpace.getX() * Math.cos(cameraPose_TargetSpace.getRotation().getZ() * 0.0174533) * -1;
+      double ySpeed = (cameraPose_TargetSpace.getY() * Math.sin(cameraPose_TargetSpace.getRotation().getZ() * 0.0174533) - 1.0);
+      
+
+      driveT.applyRequest(() ->
+      robotCentricRequest.withVelocityX(xSpeed).withVelocityY(ySpeed).withRotationalRate(yawSpeed)
+      );
+      System.out.println("Yaw: " + yawSpeed + " XSpeed: " + xSpeed + " Y Speed: " + ySpeed);
   }
 
   @Override
