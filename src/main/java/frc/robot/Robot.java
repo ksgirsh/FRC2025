@@ -5,11 +5,13 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -28,9 +30,12 @@ public class Robot extends TimedRobot {
 
   private Pigeon2 _pigeon;
 
+  private final Field2d m_field = new Field2d();
+
   public Robot() {
     m_robotContainer = new RobotContainer();
-    CameraServer.startAutomaticCapture();
+    CameraServer.startAutomaticCapture(0);
+    CameraServer.startAutomaticCapture(1);
     // CameraServer.addCamera(new HttpCamera("limelight", "http://10.59.68.11:5800/stream.mjpg", HttpCamera.HttpCameraKind.kMJPGStreamer));
     _pigeon = new Pigeon2(1, "rio");
   }
@@ -47,6 +52,12 @@ public class Robot extends TimedRobot {
     StatusSignal<Angle> yaw = _pigeon.getYaw();
     double robotYaw = -yaw.getValueAsDouble(); 
     SmartDashboard.putNumber("yaw", robotYaw);
+    double matchTime = DriverStation.getMatchTime();
+    SmartDashboard.putNumber("matchTime", matchTime);
+    double voltage = RobotController.getBatteryVoltage();
+    SmartDashboard.putNumber("voltage", voltage);
+    SmartDashboard.putData("Field", m_field);
+    m_field.setRobotPose(LimelightHelpers.getBotPose2d("null"));
     }
 
   @Override
