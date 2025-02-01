@@ -25,7 +25,7 @@ import frc.robot.commands.RoboSingCommand;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.RoboSingSubsytem;
-import frc.robot.subsystems.limeLightAllignment;
+import frc.robot.subsystems.LimelightAlignment;
 
 
 
@@ -83,7 +83,7 @@ public class RobotContainer {
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
-    public final limeLightAllignment limelight = new limeLightAllignment();
+    public final LimelightAlignment limelight = new LimelightAlignment();
 
 
 
@@ -118,7 +118,7 @@ public class RobotContainer {
         joystick.pov(90).onTrue(roboSingSubsytem.playRock());
 
         // george limelight 
-        joystick.pov(270).whileTrue(limelight.limeLightAllign());
+        joystick.pov(270).whileTrue(limelight.LimelightAlign());
 
 
 
