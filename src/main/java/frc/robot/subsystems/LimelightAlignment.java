@@ -26,47 +26,16 @@ public class LimelightAlignment extends SubsystemBase {
   private Boolean run = false;
   private double xSpeed;
 
+  // George for the love of god use limelight helpers rather than grabbing the network table values yourself
   private final NetworkTable LimelightTable = NetworkTableInstance.getDefault().getTable("limelight");
 
   /** Creates a new LimelightAlignment. */
   public LimelightAlignment() {}
-
-  double limelight_aim_proportional(double MaxSpeed)
-  {    
-    // kP (constant of proportionality)
-    // this is a hand-tuned number that determines the aggressiveness of our proportional control loop
-    // if it is too high, the robot will oscillate.
-    // if it is too low, the robot will never reach its target
-    // if the robot never turns in the correct direction, kP should be inverted.
-    double kP = .035;
-
-    // tx ranges from (-hfov/2) to (hfov/2) in degrees. If your target is on the rightmost edge of 
-    // your limelight 3 feed, tx should return roughly 31 degrees.
-    double targetingAngularVelocity = LimelightHelpers.getTX("limelight") * kP;
-
-    // convert to radians per second for our drive method
-    targetingAngularVelocity *= MaxSpeed;
-
-    //invert since tx is positive when the target is to the right of the crosshair
-    targetingAngularVelocity *= -1.0;
-
-    return targetingAngularVelocity;
-  }
-
-  double limelight_range_proportional(double MaxSpeed)
-  {    
-    double kP = .1;
-    double targetingForwardSpeed = LimelightHelpers.getTY("limelight") * kP;
-    targetingForwardSpeed *= MaxSpeed;
-    targetingForwardSpeed *= -1.0;
-    return targetingForwardSpeed;
-  }
-
-
   public Command LimelightAlign(){
     return run(() -> this.driveAtTag());
   }
   
+  // George Code
   private void driveAtTag(){
     double[] camerapose_targetspace = LimelightTable.getEntry("camerapose_targetspace").getDoubleArray(new double[6]);
       double yawSpeed = camerapose_targetspace[4] * 0.01;
@@ -81,6 +50,12 @@ public class LimelightAlignment extends SubsystemBase {
 
   @Override
   public void periodic() {
-    continue
+    // Basic targeting data
+    double tx = LimelightHelpers.getTX("");  // Horizontal offset from crosshair to target in degrees
+    double ty = LimelightHelpers.getTY("");  // Vertical offset from crosshair to target in degrees
+    double ta = LimelightHelpers.getTA("");  // Target area (0% to 100% of image)
+    boolean tv = LimelightHelpers.getTV(""); // Do you have a valid target?
+
+    System.out.println("tx: " + tx + " ty: " + ty + " ta: " + ta + " tv: " + tv);
   }
 }
