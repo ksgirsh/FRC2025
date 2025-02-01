@@ -10,16 +10,18 @@ import java.security.PublicKey;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.LimelightHelpers;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import frc.robot.generated.TunerConstants;
 
 public class limeLightAllignment extends SubsystemBase {
 
-  private CommandSwerveDrivetrain drivetrain;
+  private CommandSwerveDrivetrain drivetrain  = TunerConstants.createDrivetrain();
   private final SwerveRequest.RobotCentric robotCentricRequest = new SwerveRequest.RobotCentric();
   private Boolean run = false;
   private double xSpeed;
@@ -75,6 +77,10 @@ public class limeLightAllignment extends SubsystemBase {
           //fieldRelative = false;
           
   }
+
+  public Command limeLightAllign(){
+    return run(() -> this.driveAtTag());
+  }
   
   private void driveAtTag(){
     double[] camerapose_targetspace = limelightTable.getEntry("camerapose_targetspace").getDoubleArray(new double[6]);
@@ -85,18 +91,12 @@ public class limeLightAllignment extends SubsystemBase {
       drivetrain.applyRequest(() ->
       robotCentricRequest.withVelocityX(xSpeed).withVelocityY(ySpeed).withRotationalRate(yawSpeed)
       );
+      System.out.println("command work");
   }
 
   @Override
   public void periodic() {
-    if (run){
-      //Math
-      driveAtTag();
-      /*drivetrain.applyRequest(() ->
-      robotCentricRequest.withVelocityX(xSpeed).withVelocityY(ySpeed).withRotationalRate(yawSpeed)
-      );*/
-      
-    }
+
   
   }
 }

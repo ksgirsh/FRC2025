@@ -25,6 +25,7 @@ import frc.robot.commands.RoboSingCommand;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.RoboSingSubsytem;
+import frc.robot.subsystems.limeLightAllignment;
 
 
 
@@ -82,6 +83,8 @@ public class RobotContainer {
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
+    public final limeLightAllignment limelight = new limeLightAllignment();
+
 
 
     //syom sing intialize
@@ -113,6 +116,9 @@ public class RobotContainer {
         //syom sing
 
         joystick.pov(90).onTrue(roboSingSubsytem.playRock());
+
+        // george limelight 
+        joystick.pov(270).whileTrue(limelight.limeLightAllign());
 
 
 
@@ -191,8 +197,11 @@ public class RobotContainer {
                 .withTargetDirection(new Rotation2d(targetHeadingReef)))
         );
 
-        //turn towards selected field oriented angle towards intake
-        joystick.leftTrigger().whileTrue(
+
+
+
+
+        joystick.rightBumper().whileTrue(
             drivetrain.applyRequest(() -> 
             headingRequest.withVelocityX(-joystick.getLeftY() * MaxSpeed)
                 .withVelocityY(-joystick.getLeftX() * MaxSpeed)
