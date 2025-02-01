@@ -45,11 +45,19 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     CommandScheduler.getInstance().run(); 
     StatusSignal<Angle> yaw = _pigeon.getYaw();
-    SmartDashboard.putNumber("yaw", -yaw.getValueAsDouble());
-    // System.out.println(limelightTable.getEntry("tx").getFloat(0.0f));
+    double robotYaw = -yaw.getValueAsDouble(); 
+    SmartDashboard.putNumber("yaw", robotYaw);
 
-  //GEORGE DO NOT WRITE THE LIME LIGH CODE IN ROBOT.JAVA PLEAAAAAAASE DO NOT DO IT.
-  // use the limelightAllignment.java and robot container
+    // Test code someone can move this to a better place later
+    // https://docs.limelightvision.io/docs/docs-limelight/apis/limelight-lib
+
+    // Basic targeting data
+    double tx = LimelightHelpers.getTX("");  // Horizontal offset from crosshair to target in degrees
+    double ty = LimelightHelpers.getTY("");  // Vertical offset from crosshair to target in degrees
+    double ta = LimelightHelpers.getTA("");  // Target area (0% to 100% of image)
+    boolean tv = LimelightHelpers.getTV(""); // Do you have a valid target?
+
+    System.out.println("tx: " + tx + " ty: " + ty + " ta: " + ta + " tv: " + tv);
   }
 
   @Override
