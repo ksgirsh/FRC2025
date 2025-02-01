@@ -30,7 +30,8 @@ public class Robot extends TimedRobot {
 
   public Robot() {
     m_robotContainer = new RobotContainer();
-    CameraServer.startAutomaticCapture();
+    CameraServer.startAutomaticCapture(0);
+    CameraServer.startAutomaticCapture(1);
     // CameraServer.addCamera(new HttpCamera("limelight", "http://10.59.68.11:5800/stream.mjpg", HttpCamera.HttpCameraKind.kMJPGStreamer));
     _pigeon = new Pigeon2(1, "rio");
   }
