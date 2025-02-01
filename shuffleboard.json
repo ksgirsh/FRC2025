@@ -11,19 +11,6 @@
         "vgap": 16.0,
         "titleType": 0,
         "tiles": {
-          "6,3": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "Alerts",
-              "_source0": "network_table:///SmartDashboard/Alerts",
-              "_title": "/SmartDashboard/Alerts",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
           "6,2": {
             "size": [
               2,
@@ -103,8 +90,21 @@
             ],
             "content": {
               "_type": "Network Table Tree",
-              "_source0": "network_table:///SmartDashboard/DB",
-              "_title": "/SmartDashboard/DB",
+              "_source0": "network_table:///CameraPublisher/limelight",
+              "_title": "/CameraPublisher/limelight",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "8,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Network Table Tree",
+              "_source0": "network_table:///CameraPublisher/USB Camera 0",
+              "_title": "/CameraPublisher/USB Camera 0",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -127,9 +127,9 @@
     }
   ],
   "windowGeometry": {
-    "x": -7.333333492279053,
-    "y": -7.333333492279053,
-    "width": 1294.6666259765625,
-    "height": 694.6666870117188
+    "x": -6.400000095367432,
+    "y": -6.400000095367432,
+    "width": 1548.800048828125,
+    "height": 836.7999877929688
   }
 }
