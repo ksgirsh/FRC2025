@@ -25,6 +25,7 @@ import frc.robot.commands.RoboSingCommand;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.RoboSingSubsytem;
+import frc.robot.subsystems.limeLightAllignment;
 
 
 
@@ -66,6 +67,8 @@ public class RobotContainer {
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
+    public final limeLightAllignment limelight = new limeLightAllignment();
+
 
 
 
@@ -99,6 +102,9 @@ public class RobotContainer {
 
         joystick.pov(90).onTrue(roboSingSubsytem.playRock());
 
+        // george limelight 
+        joystick.pov(270).whileTrue(limelight.limeLightAllign());
+
 
 
         // syom test for auto gyro heading
@@ -125,6 +131,8 @@ public class RobotContainer {
         new JoystickButton(buttonBoard, 2).onTrue(
             drivetrain.runOnce(() -> targetHeading = 3 * Math.PI / 2) // 3π/2 radians (facing right)
         );
+
+
 
 
 
