@@ -19,17 +19,17 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.robot.generated.TunerConstants;
 
-public class limeLightAllignment extends SubsystemBase {
+public class LimelightAlignment extends SubsystemBase {
 
   private CommandSwerveDrivetrain drivetrain  = TunerConstants.createDrivetrain();
   private final SwerveRequest.RobotCentric robotCentricRequest = new SwerveRequest.RobotCentric();
   private Boolean run = false;
   private double xSpeed;
 
-  private final NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
+  private final NetworkTable LimelightTable = NetworkTableInstance.getDefault().getTable("limelight");
 
-  /** Creates a new limeLightAllignment. */
-  public limeLightAllignment() {}
+  /** Creates a new LimelightAlignment. */
+  public LimelightAlignment() {}
 
   double limelight_aim_proportional(double MaxSpeed)
   {    
@@ -63,27 +63,12 @@ public class limeLightAllignment extends SubsystemBase {
   }
 
 
-
-  //later in robot container call schminga(MaxSpeed)
-  public void schminga(double MaxSpeed) {
-    //finish this shit then drivtetrain.applyRequest(xSpeed, ySPeed, rot .... blah blah blah)
-          final var rot_limelight = limelight_aim_proportional(MaxSpeed);
-          //rot = rot_limelight;
-  
-          final var forward_limelight = limelight_range_proportional(MaxSpeed);
-          xSpeed = forward_limelight;
-  
-          //while using Limelight, turn off field-relative driving.
-          //fieldRelative = false;
-          
-  }
-
-  public Command limeLightAllign(){
+  public Command LimelightAlign(){
     return run(() -> this.driveAtTag());
   }
   
   private void driveAtTag(){
-    double[] camerapose_targetspace = limelightTable.getEntry("camerapose_targetspace").getDoubleArray(new double[6]);
+    double[] camerapose_targetspace = LimelightTable.getEntry("camerapose_targetspace").getDoubleArray(new double[6]);
       double yawSpeed = camerapose_targetspace[4] * 0.01;
       double xSpeed = camerapose_targetspace[0] * Math.cos(camerapose_targetspace[4] * 0.0174533) * -1;
       double ySpeed = (camerapose_targetspace[2] * Math.sin(camerapose_targetspace[4] * 0.0174533) - 0.3);
@@ -96,7 +81,6 @@ public class limeLightAllignment extends SubsystemBase {
 
   @Override
   public void periodic() {
-
-  
+    continue
   }
 }
