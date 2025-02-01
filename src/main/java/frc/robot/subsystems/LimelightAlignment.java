@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.LimelightHelpers;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.robot.generated.TunerConstants;
@@ -26,26 +27,23 @@ public class LimelightAlignment extends SubsystemBase {
   private Boolean run = false;
   private double xSpeed;
 
-  // George for the love of god use limelight helpers rather than grabbing the network table values yourself
-  private final NetworkTable LimelightTable = NetworkTableInstance.getDefault().getTable("limelight");
-
   /** Creates a new LimelightAlignment. */
   public LimelightAlignment() {}
+
   public Command LimelightAlign(){
     return run(() -> this.driveAtTag());
   }
   
   // George Code
   private void driveAtTag(){
-    double[] camerapose_targetspace = LimelightTable.getEntry("camerapose_targetspace").getDoubleArray(new double[6]);
-      double yawSpeed = camerapose_targetspace[4] * 0.01;
-      double xSpeed = camerapose_targetspace[0] * Math.cos(camerapose_targetspace[4] * 0.0174533) * -1;
-      double ySpeed = (camerapose_targetspace[2] * Math.sin(camerapose_targetspace[4] * 0.0174533) - 0.3);
-
-      drivetrain.applyRequest(() ->
-      robotCentricRequest.withVelocityX(xSpeed).withVelocityY(ySpeed).withRotationalRate(yawSpeed)
-      );
-      System.out.println("command work");
+      Pose3d cameraPose_TargetSpace = LimelightHelpers.getCameraPose3d_TargetSpace(""); // Camera's pose relative to tag (should use Robot's pose in the future)
+            
+      // double yawSpeed = camerapose_targetspace[4] * 0.01;
+      // double xSpeed = camerapose_targetspace[0] * Math.cos(camerapose_targetspace[4] * 0.0174533) * -1;
+      // double ySpeed = (camerapose_targetspace[2] * Math.sin(camerapose_targetspace[4] * 0.0174533) - 0.3);
+      // drivetrain.applyRequest(() ->
+      // robotCentricRequest.withVelocityX(xSpeed).withVelocityY(ySpeed).withRotationalRate(yawSpeed)
+      // );
   }
 
   @Override
@@ -56,6 +54,6 @@ public class LimelightAlignment extends SubsystemBase {
     double ta = LimelightHelpers.getTA("");  // Target area (0% to 100% of image)
     boolean tv = LimelightHelpers.getTV(""); // Do you have a valid target?
 
-    System.out.println("tx: " + tx + " ty: " + ty + " ta: " + ta + " tv: " + tv);
+    // System.out.println("tx: " + tx + " ty: " + ty + " ta: " + ta + " tv: " + tv);
   }
 }
