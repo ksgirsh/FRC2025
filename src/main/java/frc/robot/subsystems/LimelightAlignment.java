@@ -43,6 +43,7 @@ public class LimelightAlignment extends SubsystemBase {
       Pose3d cameraPose_TargetSpace = LimelightHelpers.getCameraPose3d_TargetSpace(""); // Camera's pose relative to tag (should use Robot's pose in the future)
           
       // when basing speed off offsets lets add an extra proportional term for each of these
+      // lets not edit the yaw
       double yawSpeed = cameraPose_TargetSpace.getRotation().getZ();
       double xSpeed = cameraPose_TargetSpace.getX() * Math.cos(cameraPose_TargetSpace.getRotation().getZ() * 0.0174533) * -1;
       double ySpeed = (cameraPose_TargetSpace.getY() * Math.sin(cameraPose_TargetSpace.getRotation().getZ() * 0.0174533) - 1.0);
