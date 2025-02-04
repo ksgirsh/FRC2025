@@ -16,10 +16,12 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.LimelightHelpers;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.robot.generated.TunerConstants;
+import edu.wpi.first.math.controller.PIDController;
 
 public class LimelightAlignment extends SubsystemBase {
 
@@ -28,6 +30,8 @@ public class LimelightAlignment extends SubsystemBase {
   private Boolean run = false;
   private double xSpeed;
 
+  private final PIDController xControl = new PIDController(0.8, 0.0, 0.2);
+  private final PIDController yControl = new PIDController(0.8, 0.0, 0.2);
   private final SwerveRequest.RobotCentric forwardStraight = new SwerveRequest.RobotCentric()
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
 
@@ -44,15 +48,13 @@ public class LimelightAlignment extends SubsystemBase {
           
       // when basing speed off offsets lets add an extra proportional term for each of these
       // lets not edit the yaw
-      double yawSpeed = cameraPose_TargetSpace.getRotation().getZ();
-      double xSpeed = cameraPose_TargetSpace.getX() * Math.cos(cameraPose_TargetSpace.getRotation().getZ() * 0.0174533) * -1;
-      double ySpeed = (cameraPose_TargetSpace.getY() * Math.sin(cameraPose_TargetSpace.getRotation().getZ() * 0.0174533) - 1.0);
-      
-
+      double DISTANCE = 1.0;
+      double xSpeed = xControl.calculate(cameraPose_TargetSpace.getX());
+      double ySpeed = xControl.calculate(cameraPose_TargetSpace.getY() - DISTANCE);
       driveT.applyRequest(() ->
-      robotCentricRequest.withVelocityX(xSpeed).withVelocityY(ySpeed).withRotationalRate(yawSpeed)
+        robotCentricRequest.withVelocityX(xSpeed).withVelocityY(ySpeed)
       );
-      System.out.println("Yaw: " + yawSpeed + " XSpeed: " + xSpeed + " Y Speed: " + ySpeed);
+      System.out.println("X Speed: " + xSpeed + " Y Speed: " + ySpeed);
   }
 
   @Override
