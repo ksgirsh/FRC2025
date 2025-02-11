@@ -49,8 +49,8 @@ public class LimelightAlignment extends SubsystemBase {
       // when basing speed off offsets lets add an extra proportional term for each of these
       // lets not edit the yaw
       double DISTANCE = 1.0;
-      yControl.setSetpoint(DISTANCE);
-      double xSpeed = xControl.calculate(cameraPose_TargetSpace.getX());
+      xControl.setSetpoint(DISTANCE);
+      double xSpeed = -xControl.calculate(cameraPose_TargetSpace.getX());
       double ySpeed = yControl.calculate(cameraPose_TargetSpace.getY());
       //driveT.applyRequest(() ->
       //  robotCentricRequest.withVelocityX(xSpeed).withVelocityY(ySpeed)
