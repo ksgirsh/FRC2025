@@ -12,6 +12,7 @@
       "/Pose": "Field2d",
       "/SmartDashboard/Alerts": "Alerts",
       "/SmartDashboard/Auto Mode": "String Chooser",
+      "/SmartDashboard/Field": "Field2d",
       "/SmartDashboard/Module 0": "Mechanism2d",
       "/SmartDashboard/Module 1": "Mechanism2d",
       "/SmartDashboard/Module 2": "Mechanism2d",

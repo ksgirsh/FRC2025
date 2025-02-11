@@ -49,12 +49,15 @@ public class LimelightAlignment extends SubsystemBase {
       // when basing speed off offsets lets add an extra proportional term for each of these
       // lets not edit the yaw
       double DISTANCE = 1.0;
+      yControl.setSetpoint(DISTANCE);
       double xSpeed = xControl.calculate(cameraPose_TargetSpace.getX());
-      double ySpeed = xControl.calculate(cameraPose_TargetSpace.getY() - DISTANCE);
-      driveT.applyRequest(() ->
-        robotCentricRequest.withVelocityX(xSpeed).withVelocityY(ySpeed)
-      );
+      double ySpeed = yControl.calculate(cameraPose_TargetSpace.getY());
+      //driveT.applyRequest(() ->
+      //  robotCentricRequest.withVelocityX(xSpeed).withVelocityY(ySpeed)
+      //);
+      driveT.setControl(new SwerveRequest.RobotCentric().withVelocityX(xSpeed).withVelocityY(ySpeed));
       System.out.println("X Speed: " + xSpeed + " Y Speed: " + ySpeed);
+
   }
 
   @Override
