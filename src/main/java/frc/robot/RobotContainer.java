@@ -21,11 +21,13 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-import frc.robot.commands.RoboSingCommand;
+
+//subsystems imports
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.RoboSingSubsytem;
 import frc.robot.subsystems.LimelightAlignment;
+import frc.robot.subsystems.Elevator;
 
 
 
@@ -49,7 +51,6 @@ public class RobotContainer {
             .withDeadband(MaxSpeed * 0.05) // Add a 3% deadband to translation
             .withDriveRequestType(DriveRequestType.Velocity)
             .withSteerRequestType(SteerRequestType.MotionMagicExpo)
-
     ;
 
     
@@ -69,7 +70,7 @@ public class RobotContainer {
     private final JoystickButton forward = new JoystickButton(buttonBoard, 12);
     private final JoystickButton left = new JoystickButton(buttonBoard, 13);
     
-    //Bb stands for buttonboard
+    //initializing buttons, Bb stands for buttonboard
     private final JoystickButton BbReefBottomCenter = new JoystickButton(buttonBoard, 1);
     private final JoystickButton BbReefBottomRight = new JoystickButton(buttonBoard, 2);
     private final JoystickButton BbReefTopRight = new JoystickButton(buttonBoard, 3);
@@ -81,8 +82,10 @@ public class RobotContainer {
     private final JoystickButton BbAlgaeProcessor = new JoystickButton(buttonBoard, 9);
      
 
-    public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+    //instancing subsystems
 
+    public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+    public final Elevator elevator = Elevator.getInstance();
     public final LimelightAlignment limelight = new LimelightAlignment();
 
 
@@ -127,7 +130,18 @@ public class RobotContainer {
         headingRequest.HeadingController.setI(0.0001);
         headingRequest.HeadingController.setD(1.2);
 
-        // syom sets target autoHeadingAngle nside CommandSwerveSubsytem but only executes trunig to that yaw on press of right bumper(code below joystck.a ,b,x,y onTrue
+        //elevator testing syom
+        joystick.a().whileTrue(
+            elevator.runOnce(() -> {
+            elevator.goToElevatorStow(); // go to elevator stow position
+            System.out.println("bong bong ");
+            })
+        );
+
+        joystick.b().whileTrue(
+            elevator.runOnce(() -> elevator.goToElevatorL2()) // go to elevator level 2 of reef
+        );
+        // syom sets target autoHeadingAngle nside CommandSwerveSubsytem but only executes turning to that yaw on press of right bumper(code below joystck.a ,b,x,y onTrue
         
         joystick.y().whileTrue(
             drivetrain.runOnce(() -> targetHeadingReef = 0) // 0 radians (facing forward)
@@ -137,13 +151,16 @@ public class RobotContainer {
             drivetrain.runOnce(() -> targetHeadingReef = Math.PI / 2) // π/2 radians (facing left)
         );
 
-        joystick.a().whileTrue(
-            drivetrain.runOnce(() -> targetHeadingReef = Math.PI) // π radians (facing backward)
-        );
+        // temporary removed to use for elevator testing
+        // joystick.a().whileTrue(
+        //     drivetrain.runOnce(() -> targetHeadingReef = Math.PI) // π radians (facing backward)
+        // );
 
-        joystick.b().whileTrue(
-            drivetrain.runOnce(() -> targetHeadingReef = 3 * Math.PI / 2) // 3π/2 radians (facing right)
-        );
+        // joystick.b().whileTrue(
+        //     drivetrain.runOnce(() -> targetHeadingReef = 3 * Math.PI / 2) // 3π/2 radians (facing right)
+        // );
+
+
 
 
         // 6 positions for reef (pos/button 1 is the side facing the drivers, go counter-clockwise):
