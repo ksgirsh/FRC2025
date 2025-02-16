@@ -110,7 +110,7 @@ public class Elevator extends SubsystemBase {
   @Override
   public void periodic() {
 
-    //System.out.println("Elevator Target: " + mPeriodicIO.elevator_target);
+    System.out.println("Elevator Target: " + mPeriodicIO.elevator_target);
 
     //periodically updates the elveator motors to turn to correct position based of what mPeriodicIO.elevator_target is set. syom
 
@@ -192,7 +192,6 @@ public class Elevator extends SubsystemBase {
   }
 
   public Command goToElevatorStow() {
-    System.out.println("bing bing .");
     return run(() -> gotoelevatorstow());
     
   }
@@ -201,7 +200,6 @@ public class Elevator extends SubsystemBase {
     mPeriodicIO.is_elevator_pos_control = true;
     mPeriodicIO.elevator_target = Constants.Elevator.kStowHeight;
     mPeriodicIO.state = ElevatorState.STOW;
-    System.out.println("Elevator is moving to stow position.");
   }
 
   public Command goToElevatorL2() {
@@ -212,7 +210,7 @@ public class Elevator extends SubsystemBase {
     mPeriodicIO.is_elevator_pos_control = true;
     mPeriodicIO.elevator_target = Constants.Elevator.kL2Height;
     mPeriodicIO.state = ElevatorState.L2;
-    System.out.println("Elevator is moving to level 2 position.");
+    System.out.println("Elevator moving to Level 2 at night");
   }
 
   public Command goToElevatorL3() {

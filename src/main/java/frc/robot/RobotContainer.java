@@ -132,14 +132,11 @@ public class RobotContainer {
 
         //elevator testing syom
         joystick.a().whileTrue(
-            elevator.runOnce(() -> {
-            elevator.goToElevatorStow(); // go to elevator stow position
-            System.out.println("bong bong ");
-            })
+            elevator.goToElevatorL2()
         );
 
         joystick.b().whileTrue(
-            elevator.runOnce(() -> elevator.goToElevatorL2()) // go to elevator level 2 of reef
+            elevator.goToElevatorL3() // go to elevator level 3 of reef
         );
         // syom sets target autoHeadingAngle nside CommandSwerveSubsytem but only executes turning to that yaw on press of right bumper(code below joystck.a ,b,x,y onTrue
         
