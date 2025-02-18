@@ -8,6 +8,7 @@ import static edu.wpi.first.units.Units.*;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveModule.SteerRequestType;
+import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -100,7 +101,6 @@ public class RobotContainer {
     public RobotContainer() {
         autoChooser = AutoBuilder.buildAutoChooser("Tests");
         SmartDashboard.putData("Auto Mode", autoChooser);
-
         configureBindings();
     }
 
@@ -121,6 +121,7 @@ public class RobotContainer {
         joystick.pov(90).onTrue(roboSingSubsytem.playRock());
 
         // george limelight 
+        joystick.pov(270).onTrue(limelight.setYaw(drivetrain.getPigeon2().getYaw().getValueAsDouble()));
         joystick.pov(270).whileTrue(limelight.LimelightAlign(drivetrain));
 
 

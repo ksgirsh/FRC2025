@@ -33,11 +33,11 @@ public class Robot extends TimedRobot {
   private final Field2d m_field = new Field2d();
 
   public Robot() {
-    m_robotContainer = new RobotContainer();
-    CameraServer.startAutomaticCapture(0);
-    CameraServer.startAutomaticCapture(1);
-    // CameraServer.addCamera(new HttpCamera("limelight", "http://10.59.68.11:5800/stream.mjpg", HttpCamera.HttpCameraKind.kMJPGStreamer));
     _pigeon = new Pigeon2(1, "rio");
+    m_robotContainer = new RobotContainer();
+    // CameraServer.startAutomaticCapture(0);
+    // CameraServer.startAutomaticCapture(1);
+    // CameraServer.addCamera(new HttpCamera("limelight", "http://10.59.68.11:5800/stream.mjpg", HttpCamera.HttpCameraKind.kMJPGStreamer));
   }
 
   @Override
