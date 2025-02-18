@@ -8,6 +8,7 @@ import java.io.ObjectInputFilter.Config;
 import java.security.PublicKey;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
+import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.wpilibj.XboxController;
@@ -30,8 +31,9 @@ public class LimelightAlignment extends SubsystemBase {
   private Boolean run = false;
   private double xSpeed;
 
-  private final PIDController xControl = new PIDController(0.8, 0.0, 0.2);
-  private final PIDController yControl = new PIDController(0.8, 0.0, 0.2);
+  private final PIDController xControl = new PIDController(1, 0.1, 0.3);
+  private final PIDController zControl = new PIDController(1, 0.1, 0.3);
+  private final PIDController yawControl = new PIDController(1, 0.2, 0.2);
   private final SwerveRequest.RobotCentric forwardStraight = new SwerveRequest.RobotCentric()
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
 
@@ -42,21 +44,32 @@ public class LimelightAlignment extends SubsystemBase {
     return run(() -> this.driveAtTag(drivetrain));
   }
   
+  public Command setYaw(double yaw){
+    return run(() -> yawControl.setSetpoint(yaw));
+  }
+
   // George Code
   private void driveAtTag(CommandSwerveDrivetrain driveT){
       Pose3d cameraPose_TargetSpace = LimelightHelpers.getCameraPose3d_TargetSpace(""); // Camera's pose relative to tag (should use Robot's pose in the future)
           
       // when basing speed off offsets lets add an extra proportional term for each of these
       // lets not edit the yaw
-      double DISTANCE = 1.0;
-      xControl.setSetpoint(DISTANCE);
-      double xSpeed = -xControl.calculate(cameraPose_TargetSpace.getX());
-      double ySpeed = yControl.calculate(cameraPose_TargetSpace.getY());
+      //double xPos = -0.16501350439035187;
+      //double yPos = -0.08830078668779259;
+      xControl.setSetpoint(0);
+      zControl.setSetpoint(1);
+      xControl.setTolerance(0.05);
+      zControl.setTolerance(0.05);
+      yawControl.setTolerance(0.05);
+      double ySpeed = -xControl.calculate(cameraPose_TargetSpace.getX());
+      double xSpeed = zControl.calculate(cameraPose_TargetSpace.getY());
+      double yawSpeed = yawControl.calculate(driveT.getPigeon2().getYaw().getValueAsDouble());
+      
       //driveT.applyRequest(() ->
       //  robotCentricRequest.withVelocityX(xSpeed).withVelocityY(ySpeed)
       //);
-      driveT.setControl(new SwerveRequest.RobotCentric().withVelocityX(xSpeed).withVelocityY(ySpeed));
-      System.out.println("X Speed: " + xSpeed + " Y Speed: " + ySpeed);
+      driveT.setControl(new SwerveRequest.RobotCentric().withVelocityX(xSpeed).withVelocityY(ySpeed).withRotationalRate(yawSpeed));
+      System.out.println("X Speed: " + xSpeed + " Y Speed: " + ySpeed + " X Pos: " + cameraPose_TargetSpace.getX() + " Y Pos: " + cameraPose_TargetSpace.getY());
 
   }
 
