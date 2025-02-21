@@ -23,12 +23,14 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
+
 //subsystems imports
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.RoboSingSubsytem;
 import frc.robot.subsystems.LimelightAlignment;
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.AlgaeGroundtake;
 
 
 
@@ -87,6 +89,7 @@ public class RobotContainer {
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     public final Elevator elevator = Elevator.getInstance();
+    public final AlgaeGroundtake algaeGroundtake = AlgaeGroundtake.getInstance();
     public final LimelightAlignment limelight = new LimelightAlignment();
 
 
@@ -133,16 +136,16 @@ public class RobotContainer {
 
         //elevator testing syom
         joystick.a().whileTrue(
-            elevator.goToElevatorL2()
+            algaeGroundtake.goToPivotIn()// go to pivot out position
         );
 
         joystick.b().whileTrue(
-            elevator.goToElevatorL3() // go to elevator level 3 of reef
+            algaeGroundtake.goToPivotOut()//o to elevator level 3 of reef
         );
         // syom sets target autoHeadingAngle nside CommandSwerveSubsytem but only executes turning to that yaw on press of right bumper(code below joystck.a ,b,x,y onTrue
         
         joystick.y().whileTrue(
-            drivetrain.runOnce(() -> targetHeadingReef = 0) // 0 radians (facing forward)
+            algaeGroundtake.resetPivotZero()// 0 radians (facing forward)
         );
 
         joystick.x().whileTrue(

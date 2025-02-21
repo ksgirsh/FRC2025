@@ -37,6 +37,24 @@ public static class Elevator {
     public static final double kLowAlgaeHeight = 24.8;
     public static final double kHighAlgaeHeight = 42.5;
   }
+  public static class AlgaeGroundtake {
+    public static final int kPivotMotorId = 6;
+    public static final int kIntakeMotorId = 7;
+
+    public static final double kP = 0.15;
+    public static final double kI = 0;
+    public static final double kD = 0.0;
+    public static final double kIZone = 5.0;
+    public static final double kG = 0.5;
+
+    public static final double kMaxVelocity = 20;
+    public static final double kMaxAcceleration = 20;
+
+    public static final int kMaxCurrent = 40;
+    // zerod at lying flat on insde of frame, prob gonna have to change later
+    public static final double kInRotations = 0;
+    public static final double kOutRotations = -3.0;
+  }
 
   
 }

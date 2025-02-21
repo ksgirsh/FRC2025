@@ -110,8 +110,6 @@ public class Elevator extends SubsystemBase {
   @Override
   public void periodic() {
 
-    System.out.println("Elevator Target: " + mPeriodicIO.elevator_target);
-
     //periodically updates the elveator motors to turn to correct position based of what mPeriodicIO.elevator_target is set. syom
 
     //theres a bunch of publci function  to change elevator level, e.g 
@@ -168,8 +166,9 @@ public class Elevator extends SubsystemBase {
 
     // putNumber("State", mPeriodicIO.state);
   }
-  public void reset() {
-    mLeftEncoder.setPosition(0.0);
+  
+  public Command reset() {
+    return run(() -> mLeftEncoder.setPosition(0.0));
   }
 
   /*---------------------------------- Custom Public Functions ----------------------------------*/
