@@ -13,8 +13,8 @@ public class Constants {
 
 
 public static class Elevator {
-    public static final int kElevatorLeftMotorId = 9;
-    public static final int kElevatorRightMotorId = 10;
+    public static final int kElevatorLeftMotorId = 1;
+    public static final int kElevatorRightMotorId = 2;
 
     public static final double kP = 0.15;
     public static final double kI = 0;
@@ -30,7 +30,7 @@ public static class Elevator {
     public static final double kStowHeight = 0.0;
     public static final double kL2Height = 9.0;
     public static final double kL3Height = 25.14;
-    public static final double kL4Height = 52.0;
+    public static final double kL4Height = 70.0;
     public static final double kMaxHeight = 56.2;
     public static final double kGroundAlgaeHeight = 0.0;
     public static final double kScoreAlgaeHeight = 0.0;
