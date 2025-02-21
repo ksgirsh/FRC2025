@@ -30,10 +30,14 @@ public class LimelightAlignment extends SubsystemBase {
   private final SwerveRequest.RobotCentric robotCentricRequest = new SwerveRequest.RobotCentric();
   private Boolean run = false;
   private double xSpeed;
+  //PID bad for Limelight don't use
+  //private final PIDController xControl = new PIDController(1, 0, 0.3);
+  //private final PIDController zControl = new PIDController(1, 0, 0.3);
+  private final PIDController yawControl = new PIDController(0.3, 0, 0.4);
+  private final double kix = 1.5;
+  private final double kiy = 1.5;
+  
 
-  private final PIDController xControl = new PIDController(1, 0.1, 0.3);
-  private final PIDController zControl = new PIDController(1, 0.1, 0.3);
-  private final PIDController yawControl = new PIDController(1, 0.2, 0.2);
   private final SwerveRequest.RobotCentric forwardStraight = new SwerveRequest.RobotCentric()
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
 
@@ -56,20 +60,26 @@ public class LimelightAlignment extends SubsystemBase {
       // lets not edit the yaw
       //double xPos = -0.16501350439035187;
       //double yPos = -0.08830078668779259;
-      xControl.setSetpoint(0);
-      zControl.setSetpoint(1);
-      xControl.setTolerance(0.05);
-      zControl.setTolerance(0.05);
+
+      //xControl.setSetpoint(0);
+      //zControl.setSetpoint(1);
+      //xControl.setTolerance(0.05);
+      //zControl.setTolerance(0.05);
       yawControl.setTolerance(0.05);
-      double ySpeed = -xControl.calculate(cameraPose_TargetSpace.getX());
-      double xSpeed = zControl.calculate(cameraPose_TargetSpace.getY());
-      double yawSpeed = yawControl.calculate(driveT.getPigeon2().getYaw().getValueAsDouble());
+      yawControl.enableContinuousInput(-180, 180);
+      double ySpeed = kiy * cameraPose_TargetSpace.getX();
+      double xSpeed = -kix * (cameraPose_TargetSpace.getZ() + 1);
+      System.out.println("Z: " + cameraPose_TargetSpace.getZ());
+      double yawSpeed = -yawControl.calculate(driveT.getPigeon2().getYaw().getValueAsDouble())  * 0.01;
+      if(yawSpeed < 0.05){
+        yawSpeed = 0;
+      }
       
       //driveT.applyRequest(() ->
       //  robotCentricRequest.withVelocityX(xSpeed).withVelocityY(ySpeed)
       //);
       driveT.setControl(new SwerveRequest.RobotCentric().withVelocityX(xSpeed).withVelocityY(ySpeed).withRotationalRate(yawSpeed));
-      System.out.println("X Speed: " + xSpeed + " Y Speed: " + ySpeed + " X Pos: " + cameraPose_TargetSpace.getX() + " Y Pos: " + cameraPose_TargetSpace.getY());
+      //System.out.println("X Speed: " + xSpeed + " Y Speed: " + ySpeed + " X Pos: " + cameraPose_TargetSpace.getX() + " Y Pos: " + cameraPose_TargetSpace.getY());
 
   }
 
