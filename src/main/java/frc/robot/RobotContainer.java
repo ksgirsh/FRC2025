@@ -148,8 +148,8 @@ public class RobotContainer {
             algaeGroundtake.resetPivotZero()// 0 radians (facing forward)
         );
 
-        joystick.x().whileTrue(
-            drivetrain.runOnce(() -> targetHeadingReef = Math.PI / 2) // π/2 radians (facing left)
+        joystick.x().onTrue(
+           algaeGroundtake.intakeCommand() // run intkae 
         );
 
         // temporary removed to use for elevator testing

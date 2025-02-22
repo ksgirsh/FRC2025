@@ -47,8 +47,13 @@ public static class Elevator {
     public static final double kIZone = 5.0;
     public static final double kG = 0.5;
 
+    //speed of pivot
     public static final double kMaxVelocity = 20;
     public static final double kMaxAcceleration = 20;
+
+    //speed of intake
+    public static final double kIntakeSpeed = 0.3;
+    public static final double kReverseSpeed = -0.3;
 
     public static final int kMaxCurrent = 40;
     // zerod at lying flat on insde of frame, prob gonna have to change later
