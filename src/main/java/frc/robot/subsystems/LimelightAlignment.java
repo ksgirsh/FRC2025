@@ -56,15 +56,6 @@ public class LimelightAlignment extends SubsystemBase {
   private void driveAtTag(CommandSwerveDrivetrain driveT){
       Pose3d cameraPose_TargetSpace = LimelightHelpers.getCameraPose3d_TargetSpace(""); // Camera's pose relative to tag (should use Robot's pose in the future)
           
-      // when basing speed off offsets lets add an extra proportional term for each of these
-      // lets not edit the yaw
-      //double xPos = -0.16501350439035187;
-      //double yPos = -0.08830078668779259;
-
-      //xControl.setSetpoint(0);
-      //zControl.setSetpoint(1);
-      //xControl.setTolerance(0.05);
-      //zControl.setTolerance(0.05);
       yawControl.setTolerance(0.05);
       yawControl.enableContinuousInput(-180, 180);
       double ySpeed = kiy * cameraPose_TargetSpace.getX();

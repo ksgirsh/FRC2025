@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 //subsystems imports
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.Coral;
 import frc.robot.subsystems.RoboSingSubsytem;
 import frc.robot.subsystems.LimelightAlignment;
 import frc.robot.subsystems.Elevator;
@@ -88,6 +89,7 @@ public class RobotContainer {
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     public final Elevator elevator = Elevator.getInstance();
     public final LimelightAlignment limelight = new LimelightAlignment();
+    private final Coral coral = Coral.getInstance();
 
 
 
@@ -132,12 +134,15 @@ public class RobotContainer {
         headingRequest.HeadingController.setD(1.2);
 
         //elevator testing syom
-        joystick.a().whileTrue(
-            elevator.goToElevatorL2()
+        joystick.a().onTrue(
+            coral.comIntake()
+            //elevator.goToElevatorL2()
+        
         );
 
         joystick.b().whileTrue(
-            elevator.goToElevatorL3() // go to elevator level 3 of reef
+            //elevator.goToElevatorL3() // go to elevator level 3 of reef
+            coral.idle()
         );
         // syom sets target autoHeadingAngle nside CommandSwerveSubsytem but only executes turning to that yaw on press of right bumper(code below joystck.a ,b,x,y onTrue
         

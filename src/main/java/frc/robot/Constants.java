@@ -39,4 +39,26 @@ public static class Elevator {
   }
 
   
+
+  public static class Coral {
+    public static final int kLeftMotorId = 3;
+    public static final int kRightMotorId = 4;
+
+    public static final int kLaserId = 0;
+    public static final int kColorId = 16;
+
+    public static final double kMaxCurrent = 20;
+
+    public static final double kP = 0.0;
+    public static final double kI = 0.0;
+    public static final double kD = 0.0;
+    public static final double kIZone = 0;
+
+    public static final double kIntakeSpeed = 0.3;
+    public static final double kReverseSpeed = -0.3;
+    public static final double kL1Speed = 0.4;
+    public static final double kL24Speed = 0.4;
+    public static final double kIndexSpeed = 0.1;
+    public static final double kSpeedDifference = kL1Speed * 0.5;
+  }
 }
