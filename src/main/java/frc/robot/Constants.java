@@ -21,7 +21,7 @@ public static class Elevator {
     public static final double kD = 0.0;
     public static final double kIZone = 5.0;
     public static final double kG = 0.5;
-
+    
     public static final double kMaxVelocity = 65;
     public static final double kMaxAcceleration = 200;
 
@@ -59,6 +59,8 @@ public static class Elevator {
     // zerod at lying flat on insde of frame, prob gonna have to change later
     public static final double kInRotations = 0;
     public static final double kOutRotations = -3.0;
+
+
   }
 
   
@@ -83,5 +85,10 @@ public static class Elevator {
     public static final double kL24Speed = 0.4;
     public static final double kIndexSpeed = 0.1;
     public static final double kSpeedDifference = kL1Speed * 0.5;
+  }
+
+  public static class LimelightAlignment {
+
+    public static final double kZtoX = 1.0; 
   }
 }

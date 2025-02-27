@@ -23,6 +23,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.robot.generated.TunerConstants;
 import edu.wpi.first.math.controller.PIDController;
+import frc.robot.Constants;
 
 public class LimelightAlignment extends SubsystemBase {
 
@@ -78,7 +79,7 @@ public class LimelightAlignment extends SubsystemBase {
       {
         System.out.println("i love bananass]");
         ySpeed = kiy * cameraPose_TargetSpace.getX();
-        xSpeed = -kix * (cameraPose_TargetSpace.getZ() + 1);
+        xSpeed = -kix * (cameraPose_TargetSpace.getZ() + Constants.LimelightAlignment.kZtoX);
       }
       else
       {
