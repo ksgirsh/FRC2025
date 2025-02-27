@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
@@ -73,6 +74,11 @@ public class RobotContainer {
     private final JoystickButton right = new JoystickButton(buttonBoard, 11);
     private final JoystickButton forward = new JoystickButton(buttonBoard, 12);
     private final JoystickButton left = new JoystickButton(buttonBoard, 13);
+
+    private final POVButton elevatorl4 = new POVButton(buttonBoard, 90);
+    private final POVButton elevatorl3 = new POVButton(buttonBoard, 180);
+    private final POVButton elevatorl2 = new POVButton(buttonBoard, 270);
+    private final POVButton elevatorl1 = new POVButton(buttonBoard, 0);
     
     //initializing buttons, Bb stands for buttonboard
     private final JoystickButton BbReefBottomCenter = new JoystickButton(buttonBoard, 1);
@@ -152,6 +158,22 @@ public class RobotContainer {
 
         joystick.x().onTrue(
            algaeGroundtake.intakeCommand() // run intkae 
+        );
+
+        elevatorl4.onTrue(
+               elevator.goToElevatorL4() // go to elevator level 4 of reef
+        );
+
+        elevatorl3.onTrue(
+            elevator.goToElevatorL3() // go to elevator level 3 of reef
+        );
+
+        elevatorl2.onTrue(
+            elevator.goToElevatorL2() // go to elevator level 2 of reef
+        );
+
+        elevatorl1.onTrue(
+            elevator.goToElevatorStow() // go to elevator stow position
         );
 
         // temporary removed to use for elevator testing

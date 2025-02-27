@@ -23,19 +23,23 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.robot.generated.TunerConstants;
 import edu.wpi.first.math.controller.PIDController;
+import frc.robot.Constants;
 
 public class LimelightAlignment extends SubsystemBase {
 
   //private CommandSwerveDrivetrain drivetrain  = TunerConstants.createDrivetrain();
   private final SwerveRequest.RobotCentric robotCentricRequest = new SwerveRequest.RobotCentric();
   private Boolean run = false;
-  private double xSpeed;
+
   //PID bad for Limelight don't use
   //private final PIDController xControl = new PIDController(1, 0, 0.3);
   //private final PIDController zControl = new PIDController(1, 0, 0.3);
   private final PIDController yawControl = new PIDController(0.3, 0, 0.4);
   private final double kix = 1.5;
   private final double kiy = 1.5;
+
+  double ySpeed = 0;
+  double xSpeed = 0;
   
 
   private final SwerveRequest.RobotCentric forwardStraight = new SwerveRequest.RobotCentric()
@@ -55,11 +59,35 @@ public class LimelightAlignment extends SubsystemBase {
   // George Code
   private void driveAtTag(CommandSwerveDrivetrain driveT){
       Pose3d cameraPose_TargetSpace = LimelightHelpers.getCameraPose3d_TargetSpace(""); // Camera's pose relative to tag (should use Robot's pose in the future)
-          
+   
+      // when basing speed off offsets lets add an extra proportional term for each of these
+      // lets not edit the yaw
+      //double xPos = -0.16501350439035187;
+      //double yPos = -0.08830078668779259;
+
+      //xControl.setSetpoint(0);
+      //zControl.setSetpoint(1);
+      //xControl.setTolerance(0.05);
+      //zControl.setTolerance(0.05);
+  
       yawControl.setTolerance(0.05);
       yawControl.enableContinuousInput(-180, 180);
-      double ySpeed = kiy * cameraPose_TargetSpace.getX();
-      double xSpeed = -kix * (cameraPose_TargetSpace.getZ() + 1);
+
+      // when lime light is not seeing the target, it will return 0 for x and y
+      // if x and y are 0, then we should not move
+      if (cameraPose_TargetSpace.getX() != 0 && cameraPose_TargetSpace.getY() != 0)
+      {
+        System.out.println("i love bananass]");
+        ySpeed = kiy * cameraPose_TargetSpace.getX();
+        xSpeed = -kix * (cameraPose_TargetSpace.getZ() + Constants.LimelightAlignment.kZtoX);
+      }
+      else
+      {
+        System.out.println("i love applse");
+        ySpeed = 0;
+        xSpeed = 0;
+      }
+
       System.out.println("Z: " + cameraPose_TargetSpace.getZ());
       double yawSpeed = -yawControl.calculate(driveT.getPigeon2().getYaw().getValueAsDouble())  * 0.01;
       if(yawSpeed < 0.05){
@@ -69,7 +97,12 @@ public class LimelightAlignment extends SubsystemBase {
       //driveT.applyRequest(() ->
       //  robotCentricRequest.withVelocityX(xSpeed).withVelocityY(ySpeed)
       //);
+
+      // if tx or ty is not 0, then move
+      
       driveT.setControl(new SwerveRequest.RobotCentric().withVelocityX(xSpeed).withVelocityY(ySpeed).withRotationalRate(yawSpeed));
+      
+      
       //System.out.println("X Speed: " + xSpeed + " Y Speed: " + ySpeed + " X Pos: " + cameraPose_TargetSpace.getX() + " Y Pos: " + cameraPose_TargetSpace.getY());
 
   }
