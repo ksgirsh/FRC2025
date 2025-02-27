@@ -4,10 +4,16 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.LimitSwitchConfig;
+import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.wpilibj.util.Color;
 import frc.robot.Constants;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+import org.opencv.ml.Ml;
+
+import com.revrobotics.spark.SparkLimitSwitch;
 import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -37,8 +43,11 @@ public class Coral extends SubsystemBase {
   // private ThriftyNova mRightMotor;
   private SparkMax mLeftMotor;
   private SparkMax mRightMotor;
-
-
+  private SparkLimitSwitch laser;
+  //true while coral is going past what makes laser detect
+  private boolean extend;
+  //position when extend changed to true
+  private double extendFromRotations;
   private Coral() {
     super("Coral");
 
@@ -46,11 +55,10 @@ public class Coral extends SubsystemBase {
 
     mLeftMotor = new SparkMax(Constants.Coral.kLeftMotorId, MotorType.kBrushless);
     mRightMotor = new SparkMax(Constants.Coral.kRightMotorId, MotorType.kBrushless);
-
     SparkMaxConfig coralConfig = new SparkMaxConfig();
-
-    coralConfig.idleMode(IdleMode.kBrake);
-
+    extend = false;
+    coralConfig.idleMode(IdleMode.kBrake).apply(new LimitSwitchConfig().forwardLimitSwitchEnabled(false));
+    laser = mLeftMotor.getForwardLimitSwitch();
     mLeftMotor.configure(
         coralConfig,
         ResetMode.kResetSafeParameters,
@@ -59,6 +67,11 @@ public class Coral extends SubsystemBase {
         coralConfig,
         ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
+
+    
+    laser = mLeftMotor.getForwardLimitSwitch();
+    
+    
   }
 
   private static class PeriodicIO {
@@ -129,6 +142,30 @@ public class Coral extends SubsystemBase {
 
   public Command comIntake(){
     return run(() -> intake());
+  }
+
+  public void laserIntake(){
+    if(laser.isPressed() || extend){
+      if(!laser.isPressed()){
+        if(!extend){
+          extend = true;
+          extendFromRotations = mLeftMotor.getEncoder().getPosition();
+        }
+        if(mLeftMotor.getEncoder().getPosition() - extendFromRotations > 0.5){
+          extend = false;
+          index();
+        }else{
+          intake();
+        }
+
+      }
+    }else{
+      intake();
+    }
+  }
+
+  public Command comLaserIntake(){
+    return run(()->laserIntake());
   }
   public void reverse() {
     mPeriodicIO.speed_diff = 0.0;
