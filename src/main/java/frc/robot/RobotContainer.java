@@ -275,7 +275,7 @@ public class RobotContainer {
             coral.LaserIntake() // runs the reverse intake
         );
         operatorJoystick.b().whileTrue(
-            coral.coralSpeed()
+            coral.coralSpeed() // runs the coral speed control depending on elevator height
         );
         coral.setDefaultCommand(coral.stopIntake()); //whenever no button is pressed, intake doesnt spin
 
