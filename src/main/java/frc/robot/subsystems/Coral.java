@@ -169,19 +169,19 @@ public class Coral extends SubsystemBase {
 
   private void coralSpeedControl() {
     if (Elevator.publicState == ElevatorState.STOW) {
-      setSpeed(Constants.Coral.kStowRPM, Constants.Coral.kStowSpeedDiff);
+      setspeed(Constants.Coral.kStowRPM, Constants.Coral.kStowSpeedDiff);
     } else if (Elevator.publicState == ElevatorState.L2) {
-      setSpeed(Constants.Coral.kL2RPM, Constants.Coral.kL2SpeedDiff);
+      setspeed(Constants.Coral.kL2RPM, Constants.Coral.kL2SpeedDiff);
     } else if (Elevator.publicState == ElevatorState.L3) {
-      setSpeed(Constants.Coral.kL3RPM, Constants.Coral.kL3SpeedDiff);
+      setspeed(Constants.Coral.kL3RPM, Constants.Coral.kL3SpeedDiff);
     } else if (Elevator.publicState == ElevatorState.L4) {
-      setSpeed(Constants.Coral.kL4RPM, Constants.Coral.kL4SpeedDiff);
+      setspeed(Constants.Coral.kL4RPM, Constants.Coral.kL4SpeedDiff);
     } else if (Elevator.publicState == ElevatorState.A1) {
-      setSpeed(Constants.Coral.kA1RPM, Constants.Coral.kA1SpeedDiff);
+      setspeed(Constants.Coral.kA1RPM, Constants.Coral.kA1SpeedDiff);
     } else if (Elevator.publicState == ElevatorState.A2) {
-      setSpeed(Constants.Coral.kA2RPM, Constants.Coral.kA2SpeedDiff);
+      setspeed(Constants.Coral.kA2RPM, Constants.Coral.kA2SpeedDiff);
     } else {
-      setSpeed(Constants.Coral.kDefaultRPM, Constants.Coral.kDefaultSpeedDiff);
+      setspeed(Constants.Coral.kDefaultRPM, Constants.Coral.kDefaultSpeedDiff);
     }
   }
 
