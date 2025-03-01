@@ -77,13 +77,12 @@ public class LimelightAlignment extends SubsystemBase {
       // if x and y are 0, then we should not move
       if (cameraPose_TargetSpace.getX() != 0 && cameraPose_TargetSpace.getY() != 0)
       {
-        System.out.println("i love bananass]");
-        ySpeed = kiy * cameraPose_TargetSpace.getX();
-        xSpeed = -kix * (cameraPose_TargetSpace.getZ() + Constants.LimelightAlignment.kZtoX);
+        ySpeed = kiy * (cameraPose_TargetSpace.getX() + Constants.LimelightAlignment.kXofset);
+        xSpeed = -kix * (cameraPose_TargetSpace.getZ() + Constants.LimelightAlignment.kYofset);
       }
       else
       {
-        System.out.println("i love applse");
+        System.out.println("can't see apriltag");
         ySpeed = 0;
         xSpeed = 0;
       }

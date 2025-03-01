@@ -88,7 +88,9 @@ public static class Elevator {
   }
 
   public static class LimelightAlignment {
-
-    public static final double kZtoX = 1.0; 
+    //robot centric left right ofset(meters), if want to align right in front of april tag this would be 0.
+    public static final double kXofset = .2;
+    //robot centric forward backward ofset(meters), bassically how far away from the tag you want to be after ur allign.
+    public static final double kYofset = 1.0;
   }
 }

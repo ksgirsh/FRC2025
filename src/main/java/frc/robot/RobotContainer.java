@@ -67,6 +67,8 @@ public class RobotContainer {
 
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
+
+    
     private final CommandXboxController joystick = new CommandXboxController(0);
 
     Joystick buttonBoard = new Joystick(1);
@@ -75,10 +77,10 @@ public class RobotContainer {
     private final JoystickButton forward = new JoystickButton(buttonBoard, 12);
     private final JoystickButton left = new JoystickButton(buttonBoard, 13);
 
-    private final POVButton elevatorl4 = new POVButton(buttonBoard, 90);
-    private final POVButton elevatorl3 = new POVButton(buttonBoard, 180);
-    private final POVButton elevatorl2 = new POVButton(buttonBoard, 270);
-    private final POVButton elevatorl1 = new POVButton(buttonBoard, 0);
+    private final POVButton BbElevatorL4 = new POVButton(buttonBoard, 90);
+    private final POVButton BbElevatorL3 = new POVButton(buttonBoard, 180);
+    private final POVButton BbElevatorL2 = new POVButton(buttonBoard, 270);
+    private final POVButton BbElevatorL1 = new POVButton(buttonBoard, 0);
     
     //initializing buttons, Bb stands for buttonboard
     private final JoystickButton BbReefBottomCenter = new JoystickButton(buttonBoard, 1);
@@ -118,14 +120,7 @@ public class RobotContainer {
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
-        drivetrain.setDefaultCommand(
-            // Drivetrain will execute this command periodically
-            drivetrain.applyRequest(() ->
-                drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
-                    .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-                    .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
-            )
-        );
+
 
         //syom sing
 
@@ -136,13 +131,72 @@ public class RobotContainer {
         joystick.pov(270).whileTrue(limelight.LimelightAlign(drivetrain));
 
 
+/*---------------------------------- driver joystick stuff----------------------------------*/
 
-        // syom test for auto gyro heading
+
+        // Set the default command for the drivetrain to be a lambda that sets the drive request
+        // most basic drive commandd, left joystick is drives, right joystick is yaw
+        drivetrain.setDefaultCommand(
+            // Drivetrain will execute this command periodically
+            drivetrain.applyRequest(() ->
+                drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
+                    .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+                    .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+            )
+        );
+
+        //auto gyro heading PID syom
         headingRequest.HeadingController.setP(7.0);
         headingRequest.HeadingController.setI(0.0001);
         headingRequest.HeadingController.setD(1.2);
 
-        //elevator testing syom
+        //reef SET target heading
+        BbReefBottomCenter.onTrue(
+            drivetrain.runOnce(() -> {targetHeadingReef = 0; }) // close
+        );
+        BbReefBottomRight.onTrue(
+            drivetrain.runOnce(() -> targetHeadingReef = Math.PI / 3) // close right
+        );
+        BbReefTopRight.onTrue(
+            drivetrain.runOnce(() -> targetHeadingReef = 2 * Math.PI / 3) // far right
+        );
+        BbReefTopCenter.onTrue(
+            drivetrain.runOnce(() -> targetHeadingReef = Math.PI) // far
+        );
+        BbReefTopLeft.onTrue(
+            drivetrain.runOnce(() -> targetHeadingReef = 4 * Math.PI / 3) // far left
+        );
+        BbReefBottomLeft.onTrue(
+            drivetrain.runOnce(() -> targetHeadingReef = 5 * Math.PI / 3) // close left
+        );
+
+        //intake station SET target heading
+        BbIntakeL.onTrue(
+            drivetrain.runOnce(() -> targetHeadingIntake = 2.2 +Math.PI) // left intake = face 126 degrees = 2.2 rads from forward 
+        );
+        BbIntakeR.onTrue(
+            drivetrain.runOnce(() -> targetHeadingIntake = 4.084 + Math.PI) // right intake = face 234 degrees = 4.084 rads from forward
+        );
+        BbAlgaeProcessor.onTrue(
+            drivetrain.runOnce(() -> targetHeadingIntake = 3 * Math.PI / 2) // algae processor = face right
+        );
+
+        //reef APPLY target heading
+        joystick.rightTrigger().whileTrue(
+            drivetrain.applyRequest(() -> 
+            headingRequest.withVelocityX(-joystick.getLeftY() * MaxSpeed)
+                .withVelocityY(-joystick.getLeftX() * MaxSpeed)
+                .withTargetDirection(new Rotation2d(targetHeadingReef)))
+        );
+        //intake station APPLY target heading
+        joystick.leftTrigger().whileTrue(
+            drivetrain.applyRequest(() -> 
+            headingRequest.withVelocityX(-joystick.getLeftY() * MaxSpeed)
+                .withVelocityY(-joystick.getLeftX() * MaxSpeed)
+                .withTargetDirection(new Rotation2d(targetHeadingIntake)))
+        );
+
+        //Auto heading insta set and apply for four cardinal directions
         joystick.a().whileTrue(
             algaeGroundtake.goToPivotIn()// go to pivot out position
         );
@@ -150,7 +204,6 @@ public class RobotContainer {
         joystick.b().whileTrue(
             algaeGroundtake.goToPivotOut()//o to elevator level 3 of reef
         );
-        // syom sets target autoHeadingAngle nside CommandSwerveSubsytem but only executes turning to that yaw on press of right bumper(code below joystck.a ,b,x,y onTrue
         
         joystick.y().whileTrue(
             algaeGroundtake.resetPivotZero()// 0 radians (facing forward)
@@ -160,94 +213,20 @@ public class RobotContainer {
            algaeGroundtake.intakeCommand() // run intkae 
         );
 
-        elevatorl4.onTrue(
-               elevator.goToElevatorL4() // go to elevator level 4 of reef
-        );
+/*---------------------------------- operator joystick and button board stuff----------------------------------*/
+        
 
-        elevatorl3.onTrue(
+        BbElevatorL4.onTrue(
+                elevator.goToElevatorL4() // go to elevator level 4 of reef
+        );
+        BbElevatorL3.onTrue(
             elevator.goToElevatorL3() // go to elevator level 3 of reef
         );
-
-        elevatorl2.onTrue(
+        BbElevatorL2.onTrue(
             elevator.goToElevatorL2() // go to elevator level 2 of reef
         );
-
-        elevatorl1.onTrue(
+        BbElevatorL1.onTrue(
             elevator.goToElevatorStow() // go to elevator stow position
-        );
-
-        // temporary removed to use for elevator testing
-        // joystick.a().whileTrue(
-        //     drivetrain.runOnce(() -> targetHeadingReef = Math.PI) // π radians (facing backward)
-        // );
-
-        // joystick.b().whileTrue(
-        //     drivetrain.runOnce(() -> targetHeadingReef = 3 * Math.PI / 2) // 3π/2 radians (facing right)
-        // );
-
-
-
-
-        // 6 positions for reef (pos/button 1 is the side facing the drivers, go counter-clockwise):
-        BbReefBottomCenter.onTrue(
-            drivetrain.runOnce(() -> {
-            targetHeadingReef = 0; // close
-            System.out.println("Reef Bottom Center button pressed, target heading set to 0 radians.");
-            })
-        );
-
-        BbReefBottomRight.onTrue(
-            drivetrain.runOnce(() -> targetHeadingReef = Math.PI / 3) // close right
-        );
-
-        BbReefTopRight.onTrue(
-            drivetrain.runOnce(() -> targetHeadingReef = 2 * Math.PI / 3) // far right
-        );
-
-        BbReefTopCenter.onTrue(
-            drivetrain.runOnce(() -> targetHeadingReef = Math.PI) // far
-        );
-
-        BbReefTopLeft.onTrue(
-            drivetrain.runOnce(() -> targetHeadingReef = 4 * Math.PI / 3) // far left
-        );
-
-        BbReefBottomLeft.onTrue(
-            drivetrain.runOnce(() -> targetHeadingReef = 5 * Math.PI / 3) // close left
-        );
-
-
-        // L/R intake & algae processor
-
-        BbIntakeL.onTrue(
-            drivetrain.runOnce(() -> targetHeadingIntake = 2.2 +Math.PI) // left intake = face 126 degrees = 2.2 rads from forward 
-        );
-
-        BbIntakeR.onTrue(
-            drivetrain.runOnce(() -> targetHeadingIntake = 4.084 + Math.PI) // right intake = face 234 degrees = 4.084 rads from forward
-        );
-
-        BbAlgaeProcessor.onTrue(
-            drivetrain.runOnce(() -> targetHeadingIntake = 3 * Math.PI / 2) // algae processor = face right
-        );
-
-        //turn to towards selected field orientated angle towards reef
-        joystick.rightTrigger().whileTrue(
-            drivetrain.applyRequest(() -> 
-            headingRequest.withVelocityX(-joystick.getLeftY() * MaxSpeed)
-                .withVelocityY(-joystick.getLeftX() * MaxSpeed)
-                .withTargetDirection(new Rotation2d(targetHeadingReef)))
-        );
-
-
-
-
-
-        joystick.rightBumper().whileTrue(
-            drivetrain.applyRequest(() -> 
-            headingRequest.withVelocityX(-joystick.getLeftY() * MaxSpeed)
-                .withVelocityY(-joystick.getLeftX() * MaxSpeed)
-                .withTargetDirection(new Rotation2d(targetHeadingIntake)))
         );
 
         // ong we dont need this shit wtf is breaking 

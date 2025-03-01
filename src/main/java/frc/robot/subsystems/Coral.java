@@ -87,14 +87,17 @@ public class Coral extends SubsystemBase {
 
   @Override
   public void periodic() {
+    mLeftMotor.set(mPeriodicIO.rpm - mPeriodicIO.speed_diff);
+    mRightMotor.set(-mPeriodicIO.rpm);
 
     checkAutoTasks();
   }
+//uselless ah function
 
-  public void writePeriodicOutputs() {
-    mLeftMotor.set(mPeriodicIO.rpm - mPeriodicIO.speed_diff);
-    mRightMotor.set(-mPeriodicIO.rpm);
-  }
+  // public void writePeriodicOutputs() {
+  //   mLeftMotor.set(mPeriodicIO.rpm - mPeriodicIO.speed_diff);
+  //   mRightMotor.set(-mPeriodicIO.rpm);
+  // }
 
   public void stop() {
     mPeriodicIO.rpm = 0.0;
