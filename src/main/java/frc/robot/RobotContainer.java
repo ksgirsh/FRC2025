@@ -274,36 +274,9 @@ public class RobotContainer {
         operatorJoystick.a().whileTrue(
             coral.LaserIntake() // runs the reverse intake
         );
-        operatorJoystick.b().whileTrue(() -> {
-            if (Elevator.publicState == ElevatorState.STOW) 
-            {
-            coral.setSpeed(Coral.kStowRPM, Coral.kStowSpeedDiff);
-            } 
-            else if (Elevator.publicState == ElevatorState.L2) 
-            {
-            coral.setSpeed(Coral.kL2RPM, Coral.kL2SpeedDiff);
-            } 
-            else if (Elevator.publicState == ElevatorState.L3) 
-            {
-            coral.setSpeed(Coral.kL3RPM, Coral.kL3SpeedDiff);
-            } 
-            else if (Elevator.publicState == ElevatorState.L4) 
-            {
-            coral.setSpeed(Coral.kL4RPM, Coral.kL4SpeedDiff);
-            } 
-            else if (Elevator.publicState == ElevatorState.A1) 
-            {
-            coral.setSpeed(Coral.kA1RPM, Coral.kA1SpeedDiff);
-            } 
-            else if (Elevator.publicState == ElevatorState.A2) 
-            {
-            coral.setSpeed(Coral.kA2RPM, Coral.kA2SpeedDiff);
-            } 
-            else 
-            {
-            coral.setSpeed(Coral.kDefaultRPM, Coral.kDefaultSpeedDiff);
-            }
-        });
+        operatorJoystick.b().whileTrue(
+            coral.coralSpeed()
+        );
         coral.setDefaultCommand(coral.stopIntake()); //whenever no button is pressed, intake doesnt spin
 
 
