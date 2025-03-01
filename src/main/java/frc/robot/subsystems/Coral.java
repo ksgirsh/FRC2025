@@ -130,12 +130,21 @@ public class Coral extends SubsystemBase {
     return false;
   }
 
-  public void setSpeed(double rpm) {
-    mPeriodicIO.speed_diff = 0.0;
+
+  public Command setSpeed(double rpm, double speed_diff) {
+    return run(()->setspeed(rpm, speed_diff));
+
+  }
+  private void setspeed(double rpm, double speed_diff) {
+    mPeriodicIO.speed_diff = speed_diff;
     mPeriodicIO.rpm = rpm;
   }
 
-  public void intake() {
+  public Command Intake(){
+    return run(() -> intake());
+  }
+
+  private void intake() {
     mPeriodicIO.speed_diff = 0.0;
     mPeriodicIO.rpm = Constants.Coral.kIntakeSpeed;
     mPeriodicIO.state = IntakeState.INTAKE;
@@ -143,11 +152,22 @@ public class Coral extends SubsystemBase {
     //m_leds.setColor(Color.kYellow);
   }
 
-  public Command comIntake(){
-    return run(() -> intake());
+  public Command stopIntake(){
+    return run(() -> stopCoral());
   }
 
-  public void laserIntake(){
+  private void stopCoral() {
+    mPeriodicIO.rpm = 0.0;
+    mPeriodicIO.speed_diff = 0.0;
+    mPeriodicIO.state = IntakeState.NONE;
+  }
+
+
+  public Command LaserIntake(){
+    return run(()->laserIntake());
+  }
+
+  private void laserIntake(){
     if(laser.isPressed() || extend){
       if(!laser.isPressed()){
         if(!extend){
@@ -167,25 +187,28 @@ public class Coral extends SubsystemBase {
     }
   }
 
-  public Command comLaserIntake(){
-    return run(()->laserIntake());
-  }
+
+
+  //-- not useful shit-----------
+
   public void reverse() {
     mPeriodicIO.speed_diff = 0.0;
     mPeriodicIO.rpm = Constants.Coral.kReverseSpeed;
     mPeriodicIO.state = IntakeState.REVERSE;
   }
 
-  public void index() {
+  public Command idle(){
+    return run(() -> index());
+  }
+
+  private void index() {
     mPeriodicIO.speed_diff = 0.0;
     mPeriodicIO.rpm = Constants.Coral.kIndexSpeed;
     mPeriodicIO.state = IntakeState.INDEX;
 
     //m_leds.setColor(Color.kBlue);
   }
-  public Command idle(){
-    return run(() -> index());
-  }
+
 
   public void scoreL1() {
     mPeriodicIO.speed_diff = Constants.Coral.kSpeedDifference;
@@ -197,12 +220,6 @@ public class Coral extends SubsystemBase {
     mPeriodicIO.speed_diff = 0.0;
     mPeriodicIO.rpm = Constants.Coral.kL24Speed;
     mPeriodicIO.state = IntakeState.SCORE;
-  }
-
-  public void stopCoral() {
-    mPeriodicIO.rpm = 0.0;
-    mPeriodicIO.speed_diff = 0.0;
-    mPeriodicIO.state = IntakeState.NONE;
   }
 
   /*---------------------------------- Custom Private Functions ---------------------------------*/

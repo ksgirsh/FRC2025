@@ -168,7 +168,7 @@ public class AlgaeGroundtake extends SubsystemBase {
   }
   //intake commands
 
-  public Command intakeCommand() {
+  public Command Intake() {
     return run(() -> intake());
   }
 
@@ -176,22 +176,9 @@ public class AlgaeGroundtake extends SubsystemBase {
     mPeriodicIO.intake_speed_diff = 0.0;
       mPeriodicIO.intake_rpm = Constants.AlgaeGroundtake.kIntakeSpeed;
       mPeriodicIO.istate = IntakeState.INTAKE;
-    if(mPeriodicIO.istate == IntakeState.INTAKE){
-      mPeriodicIO.intake_speed_diff = 0.0;
-      mPeriodicIO.intake_rpm = Constants.AlgaeGroundtake.kIntakeSpeed;
-      mPeriodicIO.istate = IntakeState.INTAKE;
-    }
-    else{
-      mPeriodicIO.intake_speed_diff = 0.0;
-      mPeriodicIO.intake_rpm = 0;
-      mPeriodicIO.istate = IntakeState.NONE;
-    }
-    mPeriodicIO.intake_speed_diff = 0.0;
-      mPeriodicIO.intake_rpm = Constants.AlgaeGroundtake.kIntakeSpeed;
-      mPeriodicIO.istate = IntakeState.INTAKE;
   }
 
-  public Command reverseCommand() {
+  public Command ReverseIntake() {
     return run(() -> reverse());
   }
 
@@ -201,12 +188,21 @@ public class AlgaeGroundtake extends SubsystemBase {
     mPeriodicIO.istate = IntakeState.REVERSE;
   }
 
+  public Command StopIntake() {
+    return run(() -> stopintake());
+  }
+
+  private void stopintake() {
+    mPeriodicIO.intake_speed_diff = 0.0;
+    mPeriodicIO.intake_rpm = 0.0;
+    mPeriodicIO.istate = IntakeState.NONE;
+  }
+
 
 
   //pivot commands 
   public Command goToPivotIn() {
     return run(() -> gotopivotin());
-    
   }
 
   private void gotopivotin() {

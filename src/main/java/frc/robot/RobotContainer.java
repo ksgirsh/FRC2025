@@ -68,8 +68,10 @@ public class RobotContainer {
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
 
-    
-    private final CommandXboxController joystick = new CommandXboxController(0);
+
+    private final CommandXboxController driveJoystick = new CommandXboxController(0);
+
+    private final CommandXboxController OperatorJoystick = new CommandXboxController(3);
 
     Joystick buttonBoard = new Joystick(1);
     private final JoystickButton back = new JoystickButton(buttonBoard, 10);
@@ -122,13 +124,9 @@ public class RobotContainer {
         // and Y is defined as to the left according to WPILib convention.
 
 
-        //syom sing
+        //syom sing example binding
 
-        joystick.pov(90).onTrue(roboSingSubsytem.playRock());
-
-        // george limelight 
-        joystick.pov(270).onTrue(limelight.setYaw(drivetrain.getPigeon2().getYaw().getValueAsDouble()));
-        joystick.pov(270).whileTrue(limelight.LimelightAlign(drivetrain));
+        driveJoystick.pov(90).onTrue(roboSingSubsytem.playRock());
 
 
 /*---------------------------------- driver joystick stuff----------------------------------*/
@@ -139,11 +137,29 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
-                drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
-                    .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-                    .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+                drive.withVelocityX(-driveJoystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
+                    .withVelocityY(-driveJoystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+                    .withRotationalRate(-driveJoystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
             )
         );
+
+        // robot oriented drive forwad and backward, also left right
+        driveJoystick.pov(0).whileTrue(drivetrain.applyRequest(() ->
+            forwardStraight.withVelocityX(0.5).withVelocityY(0))
+        );
+        driveJoystick.pov(90).whileTrue(drivetrain.applyRequest(() ->
+            forwardStraight.withVelocityX(0).withVelocityY(0.5))
+        );
+        driveJoystick.pov(180).whileTrue(drivetrain.applyRequest(() ->
+            forwardStraight.withVelocityX(-0.5).withVelocityY(0))
+        );
+        driveJoystick.pov(270).whileTrue(drivetrain.applyRequest(() ->
+        forwardStraight.withVelocityX(0).withVelocityY(-0.5))
+        );
+
+        //resets which which way is considered forward
+        //the "back" button is in the middle of the controller slightly on the left
+        driveJoystick.back().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         //auto gyro heading PID syom
         headingRequest.HeadingController.setP(7.0);
@@ -182,42 +198,60 @@ public class RobotContainer {
         );
 
         //reef APPLY target heading
-        joystick.rightTrigger().whileTrue(
+        driveJoystick.rightTrigger().whileTrue(
             drivetrain.applyRequest(() -> 
-            headingRequest.withVelocityX(-joystick.getLeftY() * MaxSpeed)
-                .withVelocityY(-joystick.getLeftX() * MaxSpeed)
+            headingRequest.withVelocityX(-driveJoystick.getLeftY() * MaxSpeed)
+                .withVelocityY(-driveJoystick.getLeftX() * MaxSpeed)
                 .withTargetDirection(new Rotation2d(targetHeadingReef)))
         );
         //intake station APPLY target heading
-        joystick.leftTrigger().whileTrue(
+        driveJoystick.leftTrigger().whileTrue(
             drivetrain.applyRequest(() -> 
-            headingRequest.withVelocityX(-joystick.getLeftY() * MaxSpeed)
-                .withVelocityY(-joystick.getLeftX() * MaxSpeed)
+            headingRequest.withVelocityX(-driveJoystick.getLeftY() * MaxSpeed)
+                .withVelocityY(-driveJoystick.getLeftX() * MaxSpeed)
                 .withTargetDirection(new Rotation2d(targetHeadingIntake)))
         );
 
-        //Auto heading insta set and apply for four cardinal directions
-        joystick.a().whileTrue(
-            algaeGroundtake.goToPivotIn()// go to pivot out position
+        // Auto heading insta set and apply for four cardinal directions
+        driveJoystick.y().whileTrue(
+            drivetrain.applyRequest(() -> 
+            headingRequest.withVelocityX(-driveJoystick.getLeftY() * MaxSpeed)
+            .withVelocityY(-driveJoystick.getLeftX() * MaxSpeed)
+            .withTargetDirection(new Rotation2d(0))) // Up
         );
-
-        joystick.b().whileTrue(
-            algaeGroundtake.goToPivotOut()//o to elevator level 3 of reef
+        driveJoystick.b().whileTrue(
+            drivetrain.applyRequest(() -> 
+            headingRequest.withVelocityX(-driveJoystick.getLeftY() * MaxSpeed)
+            .withVelocityY(-driveJoystick.getLeftX() * MaxSpeed)
+            .withTargetDirection(new Rotation2d(Math.PI / 2))) // Right
+        );
+        driveJoystick.a().whileTrue(
+            drivetrain.applyRequest(() -> 
+            headingRequest.withVelocityX(-driveJoystick.getLeftY() * MaxSpeed)
+            .withVelocityY(-driveJoystick.getLeftX() * MaxSpeed)
+            .withTargetDirection(new Rotation2d(Math.PI))) // Down
+        );
+        driveJoystick.x().whileTrue(
+            drivetrain.applyRequest(() -> 
+            headingRequest.withVelocityX(-driveJoystick.getLeftY() * MaxSpeed)
+            .withVelocityY(-driveJoystick.getLeftX() * MaxSpeed)
+            .withTargetDirection(new Rotation2d(3 * Math.PI / 2))) // Left
         );
         
-        joystick.y().whileTrue(
-            algaeGroundtake.resetPivotZero()// 0 radians (facing forward)
-        );
 
-        joystick.x().onTrue(
-           algaeGroundtake.intakeCommand() // run intkae 
-        );
+        // Limelight alignment
+        driveJoystick.leftBumper().onTrue(limelight.setYaw(drivetrain.getPigeon2().getYaw().getValueAsDouble()));
+        driveJoystick.leftBumper().whileTrue(limelight.LimelightAlign(drivetrain));
+
+        //TODO make right bumper button allign to right reef branch 
+
 
 /*---------------------------------- operator joystick and button board stuff----------------------------------*/
         
 
+//elevator controls
         BbElevatorL4.onTrue(
-                elevator.goToElevatorL4() // go to elevator level 4 of reef
+            elevator.goToElevatorL4() // go to elevator level 4 of reef
         );
         BbElevatorL3.onTrue(
             elevator.goToElevatorL3() // go to elevator level 3 of reef
@@ -229,6 +263,45 @@ public class RobotContainer {
             elevator.goToElevatorStow() // go to elevator stow position
         );
 
+//coral controls
+        OperatorJoystick.y().whileTrue(
+            coral.Intake() // runs the intake
+        );
+        OperatorJoystick.a().whileTrue(
+            coral.LaserIntake() // runs the reverse intake
+        );
+        OperatorJoystick.b().whileTrue(
+            coral.setSpeed(0.1, .05) // runs the L1
+        );
+        coral.setDefaultCommand(coral.stopIntake()); //whenever no button is pressed, intake doesnt spin
+
+
+//algea groundtake controls
+        OperatorJoystick.pov(0).onTrue(
+            algaeGroundtake.goToPivotOut() // flops out the algea groundtake
+        );
+        OperatorJoystick.pov(180).onTrue(
+            algaeGroundtake.goToPivotIn() // flops in the algea groundtake
+        );
+        OperatorJoystick.pov(90).whileTrue(
+            algaeGroundtake.Intake() // runs the intake
+        );
+        OperatorJoystick.pov(270).whileTrue(
+            algaeGroundtake.ReverseIntake() // runs the reverse intake
+        );
+        //whenever no button is pressed, intake doesnt spin
+        algaeGroundtake.setDefaultCommand(algaeGroundtake.StopIntake());
+
+        
+
+
+
+        
+
+
+
+
+
         // ong we dont need this shit wtf is breaking 
 
         // joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
@@ -236,22 +309,18 @@ public class RobotContainer {
         //     point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
         // ));
 
-        joystick.pov(0).whileTrue(drivetrain.applyRequest(() ->
-            forwardStraight.withVelocityX(0.5).withVelocityY(0))
-        );
-        joystick.pov(180).whileTrue(drivetrain.applyRequest(() ->
-            forwardStraight.withVelocityX(-0.5).withVelocityY(0))
-        );
+
+
+        //wtf is a sysid bru
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
-        joystick.back().and(joystick.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
-        joystick.back().and(joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
-        joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-        joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+        // joystick.back().and(joystick.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
+        // joystick.back().and(joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
+        // joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
+        // joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
         // reset the field-centric heading on left bumper press
-        joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }
