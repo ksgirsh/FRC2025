@@ -86,33 +86,33 @@ public static class Elevator {
     public static final double kIndexSpeed = 0.1;
     public static final double kSpeedDifference = kL1Speed * 0.5;
 
-    public static final double kStowRPM = 0.3;
-    public static final double kStowSpeedDiff = 0.2; // should be higher than L2-L4
+    public static final double kStowRPM = 0.2;
+    public static final double kStowSpeedDiff = 0.15; // should be higher than L2-L4
 
     public static final double kL2RPM = 0.1;
-    public static final double kL2SpeedDiff = 0.05;
+    public static final double kL2SpeedDiff = 0;
 
     public static final double kL3RPM = 0.1;
-    public static final double kL3SpeedDiff = 0.05;
+    public static final double kL3SpeedDiff = 0;
 
     public static final double kL4RPM = 0.1;
-    public static final double kL4SpeedDiff = 0.05;
+    public static final double kL4SpeedDiff = 0;
 
     public static final double kA1RPM = 0.1;
-    public static final double kA1SpeedDiff = 0.05;
+    public static final double kA1SpeedDiff = 0;
 
     public static final double kA2RPM = 0.1;
-    public static final double kA2SpeedDiff = 0.05;
+    public static final double kA2SpeedDiff = 0;
 
     public static final double kDefaultRPM = 0.1;
-    public static final double kDefaultSpeedDiff = 0.05;
+    public static final double kDefaultSpeedDiff = 0;
   }
 
   public static class LimelightAlignment {
     //robot centric left right ofset(meters), if want to align right in front of april tag this would be 0.
-    public static final double kXofset = .2;
+    public static final double kXofset = .171;
     //robot centric forward backward ofset(meters), bassically how far away from the tag you want to be after ur allign.
-    public static final double kYofset = 1.0;
+    public static final double kYofset = 0.1;
   }
 
 }
