@@ -268,9 +268,9 @@ public class RobotContainer {
         );
 
 //coral controls
-        operatorJoystick.y().whileTrue(
-            coral.Intake() // runs the intake
-        );
+        // operatorJoystick.y().whileTrue(
+        //     coral.Intake() // runs the intake
+        // );
         operatorJoystick.a().whileTrue(
             coral.LaserIntake() // runs the reverse intake
         );

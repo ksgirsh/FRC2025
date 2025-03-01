@@ -146,6 +146,7 @@ public class Coral extends SubsystemBase {
   }
 
   private void intake() {
+    System.out.println(laser.isPressed());
     mPeriodicIO.speed_diff = 0.0;
     mPeriodicIO.rpm = Constants.Coral.kIntakeSpeed;
     mPeriodicIO.state = IntakeState.INTAKE;
@@ -191,6 +192,7 @@ public class Coral extends SubsystemBase {
   }
 
   private void laserIntake(){
+    System.out.println(laser.isPressed());
     if(laser.isPressed() || extend){
       if(!laser.isPressed()){
         if(!extend){
