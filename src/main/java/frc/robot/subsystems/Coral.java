@@ -69,7 +69,7 @@ public class Coral extends SubsystemBase {
         PersistMode.kPersistParameters);
 
     
-    laser = mLeftMotor.getForwardLimitSwitch();
+    laser = mRightMotor.getForwardLimitSwitch();
     
     
   }
