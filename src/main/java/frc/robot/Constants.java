@@ -85,6 +85,27 @@ public static class Elevator {
     public static final double kL24Speed = 0.4;
     public static final double kIndexSpeed = 0.1;
     public static final double kSpeedDifference = kL1Speed * 0.5;
+
+    public static final double kStowRPM = 0.1;
+    public static final double kStowSpeedDiff = 0.05;
+
+    public static final double kL2RPM = 0.1;
+    public static final double kL2SpeedDiff = 0.05;
+
+    public static final double kL3RPM = 0.1;
+    public static final double kL3SpeedDiff = 0.05;
+
+    public static final double kL4RPM = 0.1;
+    public static final double kL4SpeedDiff = 0.05;
+
+    public static final double kA1RPM = 0.1;
+    public static final double kA1SpeedDiff = 0.05;
+
+    public static final double kA2RPM = 0.1;
+    public static final double kA2SpeedDiff = 0.05;
+
+    public static final double kDefaultRPM = 0.1;
+    public static final double kDefaultSpeedDiff = 0.05;
   }
 
   public static class LimelightAlignment {
@@ -93,4 +114,5 @@ public static class Elevator {
     //robot centric forward backward ofset(meters), bassically how far away from the tag you want to be after ur allign.
     public static final double kYofset = 1.0;
   }
+
 }

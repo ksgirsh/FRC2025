@@ -136,17 +136,7 @@ public class Coral extends SubsystemBase {
     return run(()->setspeed(rpm, speed_diff));
 
   }
-  private void setspeed(double rpm, double speed_diff) {
-    if (Elevator.publicState == ElevatorState.STOW)
-    {
-      // temp code need to do the change thing
-      rpm = 0.0;
-      speed_diff = 0.0;
-    }
-    else
-    {
-
-    }
+  private void setspeed(double rpm, double speed_diff) 
     mPeriodicIO.speed_diff = speed_diff;
     mPeriodicIO.rpm = rpm;
   }
