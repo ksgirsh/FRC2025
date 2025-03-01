@@ -9,6 +9,7 @@ import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.wpilibj.util.Color;
 import frc.robot.Constants;
+import frc.robot.subsystems.Elevator.ElevatorState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import org.opencv.ml.Ml;
@@ -136,6 +137,16 @@ public class Coral extends SubsystemBase {
 
   }
   private void setspeed(double rpm, double speed_diff) {
+    if (Elevator.publicState == ElevatorState.STOW)
+    {
+      // temp code need to do the change thing
+      rpm = 0.0;
+      speed_diff = 0.0;
+    }
+    else
+    {
+
+    }
     mPeriodicIO.speed_diff = speed_diff;
     mPeriodicIO.rpm = rpm;
   }

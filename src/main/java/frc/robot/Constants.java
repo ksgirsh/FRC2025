@@ -28,9 +28,9 @@ public static class Elevator {
     public static final int kMaxCurrent = 40;
 
     public static final double kStowHeight = 0.0;
-    public static final double kL2Height = 9.0;
-    public static final double kL3Height = 25.14;
-    public static final double kL4Height = 70.0;
+    public static final double kL2Height = 12.0;
+    public static final double kL3Height = 35.14; // good
+    public static final double kL4Height = 72.0; // good
     public static final double kMaxHeight = 56.2;
     public static final double kGroundAlgaeHeight = 0.0;
     public static final double kScoreAlgaeHeight = 0.0;
