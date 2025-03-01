@@ -28,9 +28,9 @@ public static class Elevator {
     public static final int kMaxCurrent = 40;
 
     public static final double kStowHeight = 0.0;
-    public static final double kL2Height = 9.0;
-    public static final double kL3Height = 25.14;
-    public static final double kL4Height = 70.0;
+    public static final double kL2Height = 12.0;
+    public static final double kL3Height = 35.14; // good
+    public static final double kL4Height = 72.0; // good
     public static final double kMaxHeight = 56.2;
     public static final double kGroundAlgaeHeight = 0.0;
     public static final double kScoreAlgaeHeight = 0.0;
@@ -85,6 +85,27 @@ public static class Elevator {
     public static final double kL24Speed = 0.4;
     public static final double kIndexSpeed = 0.1;
     public static final double kSpeedDifference = kL1Speed * 0.5;
+
+    public static final double kStowRPM = 0.3;
+    public static final double kStowSpeedDiff = 0.2; // should be higher than L2-L4
+
+    public static final double kL2RPM = 0.1;
+    public static final double kL2SpeedDiff = 0.05;
+
+    public static final double kL3RPM = 0.1;
+    public static final double kL3SpeedDiff = 0.05;
+
+    public static final double kL4RPM = 0.1;
+    public static final double kL4SpeedDiff = 0.05;
+
+    public static final double kA1RPM = 0.1;
+    public static final double kA1SpeedDiff = 0.05;
+
+    public static final double kA2RPM = 0.1;
+    public static final double kA2SpeedDiff = 0.05;
+
+    public static final double kDefaultRPM = 0.1;
+    public static final double kDefaultSpeedDiff = 0.05;
   }
 
   public static class LimelightAlignment {
@@ -93,4 +114,5 @@ public static class Elevator {
     //robot centric forward backward ofset(meters), bassically how far away from the tag you want to be after ur allign.
     public static final double kYofset = 1.0;
   }
+
 }

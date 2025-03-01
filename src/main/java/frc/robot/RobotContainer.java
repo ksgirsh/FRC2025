@@ -71,18 +71,18 @@ public class RobotContainer {
 
     private final CommandXboxController driveJoystick = new CommandXboxController(0);
 
-    private final CommandXboxController OperatorJoystick = new CommandXboxController(3);
+    private final CommandXboxController operatorJoystick = new CommandXboxController(1);
 
-    Joystick buttonBoard = new Joystick(1);
+    Joystick buttonBoard = new Joystick(2);
     private final JoystickButton back = new JoystickButton(buttonBoard, 10);
     private final JoystickButton right = new JoystickButton(buttonBoard, 11);
     private final JoystickButton forward = new JoystickButton(buttonBoard, 12);
     private final JoystickButton left = new JoystickButton(buttonBoard, 13);
 
-    private final POVButton BbElevatorL4 = new POVButton(buttonBoard, 90);
+    private final POVButton BbElevatorL4 = new POVButton(buttonBoard, 0);
     private final POVButton BbElevatorL3 = new POVButton(buttonBoard, 180);
-    private final POVButton BbElevatorL2 = new POVButton(buttonBoard, 270);
-    private final POVButton BbElevatorL1 = new POVButton(buttonBoard, 0);
+    private final POVButton BbElevatorL2 = new POVButton(buttonBoard, 90);
+    private final POVButton BbElevatorL1 = new POVButton(buttonBoard, 270);
     
     //initializing buttons, Bb stands for buttonboard
     private final JoystickButton BbReefBottomCenter = new JoystickButton(buttonBoard, 1);
@@ -149,13 +149,13 @@ public class RobotContainer {
 
         // robot oriented drive forwad and backward, also left right
         driveJoystick.pov(0).whileTrue(drivetrain.applyRequest(() ->
-            forwardStraight.withVelocityX(0.5).withVelocityY(0))
+            forwardStraight.withVelocityX(-0.5).withVelocityY(0))
         );
         driveJoystick.pov(90).whileTrue(drivetrain.applyRequest(() ->
             forwardStraight.withVelocityX(0).withVelocityY(0.5))
         );
         driveJoystick.pov(180).whileTrue(drivetrain.applyRequest(() ->
-            forwardStraight.withVelocityX(-0.5).withVelocityY(0))
+            forwardStraight.withVelocityX(0.5).withVelocityY(0))
         );
         driveJoystick.pov(270).whileTrue(drivetrain.applyRequest(() ->
         forwardStraight.withVelocityX(0).withVelocityY(-0.5))
@@ -227,7 +227,7 @@ public class RobotContainer {
             drivetrain.applyRequest(() -> 
             headingRequest.withVelocityX(-driveJoystick.getLeftY() * MaxSpeed)
             .withVelocityY(-driveJoystick.getLeftX() * MaxSpeed)
-            .withTargetDirection(new Rotation2d(Math.PI / 2))) // Right
+            .withTargetDirection(new Rotation2d(3*Math.PI / 2))) // Right
         );
         driveJoystick.a().whileTrue(
             drivetrain.applyRequest(() -> 
@@ -239,7 +239,7 @@ public class RobotContainer {
             drivetrain.applyRequest(() -> 
             headingRequest.withVelocityX(-driveJoystick.getLeftY() * MaxSpeed)
             .withVelocityY(-driveJoystick.getLeftX() * MaxSpeed)
-            .withTargetDirection(new Rotation2d(3 * Math.PI / 2))) // Left
+            .withTargetDirection(new Rotation2d( Math.PI / 2))) // Left
         );
 
 
@@ -268,29 +268,29 @@ public class RobotContainer {
         );
 
 //coral controls
-        OperatorJoystick.y().whileTrue(
+        operatorJoystick.y().whileTrue(
             coral.Intake() // runs the intake
         );
-        OperatorJoystick.a().whileTrue(
+        operatorJoystick.a().whileTrue(
             coral.LaserIntake() // runs the reverse intake
         );
-        OperatorJoystick.b().whileTrue(
-            coral.setSpeed(0.1, .05) // runs the L1
+        operatorJoystick.b().whileTrue(
+            coral.coralSpeed() // runs the coral speed control depending on elevator height
         );
         coral.setDefaultCommand(coral.stopIntake()); //whenever no button is pressed, intake doesnt spin
 
 
 //algea groundtake controls
-        OperatorJoystick.pov(0).onTrue(
+        operatorJoystick.pov(0).onTrue(
             algaeGroundtake.goToPivotOut() // flops out the algea groundtake
         );
-        OperatorJoystick.pov(180).onTrue(
+        operatorJoystick.pov(180).onTrue(
             algaeGroundtake.goToPivotIn() // flops in the algea groundtake
         );
-        OperatorJoystick.pov(90).whileTrue(
+        operatorJoystick.pov(90).whileTrue(
             algaeGroundtake.Intake() // runs the intake
         );
-        OperatorJoystick.pov(270).whileTrue(
+        operatorJoystick.pov(270).whileTrue(
             algaeGroundtake.ReverseIntake() // runs the reverse intake
         );
         //whenever no button is pressed, intake doesnt spin
@@ -298,10 +298,10 @@ public class RobotContainer {
 
 
 //right bumper everythings resests to be compact
-        OperatorJoystick.rightBumper().whileTrue(
+        operatorJoystick.rightBumper().whileTrue(
             elevator.goToElevatorStow()
         );
-        OperatorJoystick.rightBumper().whileTrue(
+        operatorJoystick.rightBumper().whileTrue(
             algaeGroundtake.goToPivotIn()
         );
         

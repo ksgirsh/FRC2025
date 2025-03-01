@@ -9,6 +9,7 @@ import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.wpilibj.util.Color;
 import frc.robot.Constants;
+import frc.robot.subsystems.Elevator.ElevatorState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import org.opencv.ml.Ml;
@@ -160,6 +161,28 @@ public class Coral extends SubsystemBase {
     mPeriodicIO.rpm = 0.0;
     mPeriodicIO.speed_diff = 0.0;
     mPeriodicIO.state = IntakeState.NONE;
+  }
+
+  public Command coralSpeed() {
+    return run(() -> coralSpeedControl());
+  }
+
+  private void coralSpeedControl() {
+    if (Elevator.publicState == ElevatorState.STOW) {
+      setspeed(Constants.Coral.kStowRPM, Constants.Coral.kStowSpeedDiff);
+    } else if (Elevator.publicState == ElevatorState.L2) {
+      setspeed(Constants.Coral.kL2RPM, Constants.Coral.kL2SpeedDiff);
+    } else if (Elevator.publicState == ElevatorState.L3) {
+      setspeed(Constants.Coral.kL3RPM, Constants.Coral.kL3SpeedDiff);
+    } else if (Elevator.publicState == ElevatorState.L4) {
+      setspeed(Constants.Coral.kL4RPM, Constants.Coral.kL4SpeedDiff);
+    } else if (Elevator.publicState == ElevatorState.A1) {
+      setspeed(Constants.Coral.kA1RPM, Constants.Coral.kA1SpeedDiff);
+    } else if (Elevator.publicState == ElevatorState.A2) {
+      setspeed(Constants.Coral.kA2RPM, Constants.Coral.kA2SpeedDiff);
+    } else {
+      setspeed(Constants.Coral.kDefaultRPM, Constants.Coral.kDefaultSpeedDiff);
+    }
   }
 
 

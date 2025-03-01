@@ -126,7 +126,7 @@ public class AlgaeGroundtake extends SubsystemBase {
   public void periodic() {
     //intake code
     mIntakeMotor.set(mPeriodicIO.intake_rpm);
-    System.out.println("Intake RPM: " + mPeriodicIO.intake_rpm);
+    // System.out.println("Intake RPM: " + mPeriodicIO.intake_rpm);
 
     //pivot code 
 

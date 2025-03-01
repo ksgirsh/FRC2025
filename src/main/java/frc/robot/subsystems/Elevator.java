@@ -95,8 +95,10 @@ public class Elevator extends SubsystemBase {
     A1,
     A2
   }
+  
+  public static ElevatorState publicState;
 
-  private static class PeriodicIO {
+  public static class PeriodicIO {
     double elevator_target = 0.0;
     double elevator_power = 0.0;
 
@@ -109,7 +111,6 @@ public class Elevator extends SubsystemBase {
 
   @Override
   public void periodic() {
-
     //periodically updates the elveator motors to turn to correct position based of what mPeriodicIO.elevator_target is set. syom
 
     //theres a bunch of publci function  to change elevator level, e.g 
@@ -136,6 +137,9 @@ public class Elevator extends SubsystemBase {
       mCurState.velocity = 0;
       mLeftMotor.set(mPeriodicIO.elevator_power);
     }
+
+    publicState = mPeriodicIO.state;
+
   }
 
   public void writePeriodicOutputs() {
