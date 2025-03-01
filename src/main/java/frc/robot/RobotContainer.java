@@ -94,6 +94,10 @@ public class RobotContainer {
     private final JoystickButton BbIntakeL = new JoystickButton(buttonBoard, 7);
     private final JoystickButton BbIntakeR = new JoystickButton(buttonBoard, 8);
     private final JoystickButton BbAlgaeProcessor = new JoystickButton(buttonBoard, 9);
+
+    private final JoystickButton BbCoral1 = new JoystickButton(buttonBoard, 10);
+    private final JoystickButton BbCoral2 = new JoystickButton(buttonBoard, 11);
+    private final JoystickButton BbCoral3 = new JoystickButton(buttonBoard, 12);
      
 
     //instancing subsystems
@@ -237,7 +241,7 @@ public class RobotContainer {
             .withVelocityY(-driveJoystick.getLeftX() * MaxSpeed)
             .withTargetDirection(new Rotation2d(3 * Math.PI / 2))) // Left
         );
-        
+
 
         // Limelight alignment
         driveJoystick.leftBumper().onTrue(limelight.setYaw(drivetrain.getPigeon2().getYaw().getValueAsDouble()));
@@ -292,6 +296,14 @@ public class RobotContainer {
         //whenever no button is pressed, intake doesnt spin
         algaeGroundtake.setDefaultCommand(algaeGroundtake.StopIntake());
 
+
+//right bumper everythings resests to be compact
+        OperatorJoystick.rightBumper().whileTrue(
+            elevator.goToElevatorStow()
+        );
+        OperatorJoystick.rightBumper().whileTrue(
+            algaeGroundtake.goToPivotIn()
+        );
         
 
 
