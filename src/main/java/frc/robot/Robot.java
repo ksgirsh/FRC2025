@@ -57,6 +57,7 @@ public class Robot extends TimedRobot {
     double voltage = RobotController.getBatteryVoltage();
     SmartDashboard.putNumber("voltage", voltage);
     SmartDashboard.putData("Field", m_field);
+    SmartDashboard.putBoolean("Targeting", LimelightHelpers.getTV(""));
     m_field.setRobotPose(LimelightHelpers.getBotPose2d("null"));
     }
 
