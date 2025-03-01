@@ -87,7 +87,7 @@ public static class Elevator {
     public static final double kSpeedDifference = kL1Speed * 0.5;
 
     public static final double kStowRPM = 0.1;
-    public static final double kStowSpeedDiff = 0.05;
+    public static final double kStowSpeedDiff = 0.1; // should be higher than L2-L4
 
     public static final double kL2RPM = 0.1;
     public static final double kL2SpeedDiff = 0.05;
