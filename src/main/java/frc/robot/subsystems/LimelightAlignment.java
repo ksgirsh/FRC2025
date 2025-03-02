@@ -48,8 +48,8 @@ public class LimelightAlignment extends SubsystemBase {
   /** Creates a new LimelightAlignment. */
   public LimelightAlignment() {}
 
-  public Command LimelightAlign(CommandSwerveDrivetrain drivetrain){
-    return run(() -> this.driveAtTag(drivetrain));
+  public Command LimelightAlign(CommandSwerveDrivetrain drivetrain, double XofsetMultiplier){
+    return run(() -> this.driveAtTag(drivetrain, XofsetMultiplier));
   }
   
   public Command setYaw(double yaw){
@@ -57,7 +57,7 @@ public class LimelightAlignment extends SubsystemBase {
   }
 
   // George Code
-  private void driveAtTag(CommandSwerveDrivetrain driveT){
+  private void driveAtTag(CommandSwerveDrivetrain driveT, double xOfsetMult) {
       Pose3d cameraPose_TargetSpace = LimelightHelpers.getCameraPose3d_TargetSpace(""); // Camera's pose relative to tag (should use Robot's pose in the future)
    
       // when basing speed off offsets lets add an extra proportional term for each of these
@@ -77,7 +77,7 @@ public class LimelightAlignment extends SubsystemBase {
       // if x and y are 0, then we should not move
       if (cameraPose_TargetSpace.getX() != 0 && cameraPose_TargetSpace.getY() != 0)
       {
-        ySpeed = kiy * (cameraPose_TargetSpace.getX() + Constants.LimelightAlignment.kXofset);
+        ySpeed = kiy * (cameraPose_TargetSpace.getX() + Constants.LimelightAlignment.kXofset*xOfsetMult);
         xSpeed = -kix * (cameraPose_TargetSpace.getZ() + Constants.LimelightAlignment.kYofset);
       }
       else

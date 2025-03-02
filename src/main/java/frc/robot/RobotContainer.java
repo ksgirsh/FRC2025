@@ -120,9 +120,14 @@ public class RobotContainer {
 
     public RobotContainer() {
         
-        NamedCommands.registerCommand("spinCoralIntake" ,coral.Intake());
-        NamedCommands.registerCommand("goToL3" ,elevator.goToElevatorL3());
-        NamedCommands.registerCommand("limelightAlign" ,limelight.LimelightAlign(drivetrain));
+        NamedCommands.registerCommand("spinCoralIntake" ,coral.Intake().withTimeout(1));
+
+        NamedCommands.registerCommand("goToL1" ,elevator.goToElevatorStow().withTimeout(0.5));
+        NamedCommands.registerCommand("goToL2" ,elevator.goToElevatorL2().withTimeout(0.5));
+        NamedCommands.registerCommand("goToL3" ,elevator.goToElevatorL3().withTimeout(0.5));
+        NamedCommands.registerCommand("goToL4" ,elevator.goToElevatorL4().withTimeout(0.5));
+
+        NamedCommands.registerCommand("limelightAlign" ,limelight.LimelightAlign(drivetrain).withTimeout(1.5));
         autoChooser = AutoBuilder.buildAutoChooser("Tests");
         SmartDashboard.putData("Auto Mode", autoChooser);
         configureBindings();
@@ -250,7 +255,10 @@ public class RobotContainer {
 
         // Limelight alignment
         driveJoystick.leftBumper().onTrue(limelight.setYaw(drivetrain.getPigeon2().getYaw().getValueAsDouble()));
-        driveJoystick.leftBumper().whileTrue(limelight.LimelightAlign(drivetrain));
+        driveJoystick.leftBumper().whileTrue(limelight.LimelightAlign(drivetrain, 1));
+
+        //align to right reef branch
+        driveJoystick.rightBumper().whileTrue(limelight.LimelightAlign(drivetrain, -1));
 
         //TODO make right bumper button allign to right reef branch 
 
