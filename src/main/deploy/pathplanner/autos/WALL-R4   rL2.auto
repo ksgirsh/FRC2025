@@ -1,0 +1,43 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "WL-R4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "LEFTlimelightAlign"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "R4;postallignscore"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "goToL2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "spitCoral"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

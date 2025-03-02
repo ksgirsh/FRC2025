@@ -120,14 +120,20 @@ public class RobotContainer {
 
     public RobotContainer() {
         
-        NamedCommands.registerCommand("spinCoralIntake" ,coral.Intake().withTimeout(1));
+
+        
+        NamedCommands.registerCommand("LEFTlimelightAlign" ,limelight.LimelightAlign(drivetrain,1).withTimeout(1.5));
+        NamedCommands.registerCommand("RIGHTlimelightAlign" ,limelight.LimelightAlign(drivetrain,-1).withTimeout(1.5));
+        NamedCommands.registerCommand("CENTERlimelightAlign", limelight.LimelightAlign(drivetrain, 0).withTimeout(1.5));
+
+        NamedCommands.registerCommand("spitCoral" ,coral.Intake().withTimeout(1));
 
         NamedCommands.registerCommand("goToL1" ,elevator.goToElevatorStow().withTimeout(0.5));
         NamedCommands.registerCommand("goToL2" ,elevator.goToElevatorL2().withTimeout(0.5));
         NamedCommands.registerCommand("goToL3" ,elevator.goToElevatorL3().withTimeout(0.5));
         NamedCommands.registerCommand("goToL4" ,elevator.goToElevatorL4().withTimeout(0.5));
 
-        NamedCommands.registerCommand("limelightAlign" ,limelight.LimelightAlign(drivetrain).withTimeout(1.5));
+
         autoChooser = AutoBuilder.buildAutoChooser("Tests");
         SmartDashboard.putData("Auto Mode", autoChooser);
         configureBindings();

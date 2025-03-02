@@ -7,19 +7,31 @@
         {
           "type": "path",
           "data": {
-            "pathName": "postallignscore"
+            "pathName": "WL-R4"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "spinCoralIntake"
+            "name": "LEFTlimelightAlign"
           }
         },
         {
-          "type": "wait",
+          "type": "path",
           "data": {
-            "waitTime": 10.0
+            "pathName": "R4;postallignscore"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "gotToL4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "spitCoral"
           }
         }
       ]
