@@ -164,11 +164,11 @@ public class Coral extends SubsystemBase {
     mPeriodicIO.state = IntakeState.NONE;
   }
 
-  public Command coralSpeed() {
-    return run(() -> coralSpeedControl());
+  public Command IntakeAutoSpeed() {
+    return run(() -> intakeAutoSpeed());
   }
 
-  private void coralSpeedControl() {
+  private void intakeAutoSpeed() {
     if (Elevator.publicState == ElevatorState.STOW) {
       setspeed(Constants.Coral.kStowRPM, Constants.Coral.kStowSpeedDiff);
     } else if (Elevator.publicState == ElevatorState.L2) {
@@ -184,6 +184,16 @@ public class Coral extends SubsystemBase {
     } else {
       setspeed(Constants.Coral.kDefaultRPM, Constants.Coral.kDefaultSpeedDiff);
     }
+  }
+
+  public Command IntakeReverse(){
+    return run(() -> reverse());
+  }
+
+  private void reverse() {
+    mPeriodicIO.speed_diff = 0.0;
+    mPeriodicIO.rpm = Constants.Coral.kReverseSpeed;
+    mPeriodicIO.state = IntakeState.REVERSE;
   }
 
 
@@ -215,12 +225,6 @@ public class Coral extends SubsystemBase {
 
 
   //-- not useful shit-----------
-
-  public void reverse() {
-    mPeriodicIO.speed_diff = 0.0;
-    mPeriodicIO.rpm = Constants.Coral.kReverseSpeed;
-    mPeriodicIO.state = IntakeState.REVERSE;
-  }
 
   public Command idle(){
     return run(() -> index());

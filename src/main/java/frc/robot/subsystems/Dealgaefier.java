@@ -110,7 +110,7 @@ public class Dealgaefier extends SubsystemBase {
   double intake_rpm = 0.0;
   double intake_speed_diff = 0.0;
 
-  boolean is_groundtake_pos_control = false;
+  boolean is_groundtake_pos_control = true;
 
   PivotState pstate = PivotState.NONE;
   IntakeState istate = IntakeState.NONE;

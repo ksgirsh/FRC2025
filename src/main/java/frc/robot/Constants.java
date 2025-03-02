@@ -64,8 +64,8 @@ public static class Elevator {
   }
 
   public static class Dealgaefier {
-    public static final int kPivotMotorId = 6;
-    public static final int kIntakeMotorId = 7;
+    public static final int kPivotMotorId = 5;
+    public static final int kIntakeMotorId = 8;
 
     public static final double kP = 0.15;
     public static final double kI = 0;
@@ -82,9 +82,9 @@ public static class Elevator {
     public static final double kReverseSpeed = -0.3;
 
     public static final int kMaxCurrent = 40;
-    // zerod at lying flat on insde of frame, prob gonna have to change later
+    //tune later
     public static final double kInRotations = 0;
-    public static final double kOutRotations = -3.0;
+    public static final double kOutRotations = 0.5;
 
 
   }
@@ -106,7 +106,7 @@ public static class Elevator {
     public static final double kIZone = 0;
 
     public static final double kIntakeSpeed = 0.3;
-    public static final double kReverseSpeed = -0.3;
+    public static final double kReverseSpeed = -0.05;
     public static final double kL1Speed = 0.4;
     public static final double kL24Speed = 0.4;
     public static final double kIndexSpeed = 0.1;

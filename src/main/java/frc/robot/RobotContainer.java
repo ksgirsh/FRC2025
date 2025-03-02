@@ -24,8 +24,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-
-
 //subsystems imports
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -34,6 +32,7 @@ import frc.robot.subsystems.RoboSingSubsytem;
 import frc.robot.subsystems.LimelightAlignment;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.AlgaeGroundtake;
+import frc.robot.subsystems.Dealgaefier;
 
 
 
@@ -105,9 +104,12 @@ public class RobotContainer {
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     public final Elevator elevator = Elevator.getInstance();
+    private final Coral coral = Coral.getInstance();
+    private final Dealgaefier dealgaefier = Dealgaefier.getInstance();
+
     public final AlgaeGroundtake algaeGroundtake = AlgaeGroundtake.getInstance();
     public final LimelightAlignment limelight = new LimelightAlignment();
-    private final Coral coral = Coral.getInstance();
+    
 
 
 
@@ -287,16 +289,22 @@ public class RobotContainer {
         );
 
 //coral controls
-        // operatorJoystick.y().whileTrue(
-        //     coral.Intake() // runs the intake
-        // );
-        operatorJoystick.a().whileTrue(
-            coral.LaserIntake() // runs the reverse intake
+        operatorJoystick.y().whileTrue(
+            coral.IntakeAutoSpeed() // runs the coral speed control depending on elevator height
         );
-        operatorJoystick.b().whileTrue(
-            coral.coralSpeed() // runs the coral speed control depending on elevator height
+
+        operatorJoystick.a().whileTrue(
+            coral.IntakeReverse() // runs the reverse intake
         );
         coral.setDefaultCommand(coral.stopIntake()); //whenever no button is pressed, intake doesnt spin
+
+// dealgifier controls
+        operatorJoystick.b().whileTrue(
+            dealgaefier.FlopOut() // flops out the dealgaefier and start spinning lil thing at the end  
+        );
+        operatorJoystick.x().whileTrue(
+            dealgaefier.FlopIn() // flops in the dealgaefier and stops spinning
+        );
 
 
 //algea groundtake controls
