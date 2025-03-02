@@ -128,7 +128,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("RIGHTlimelightAlign" ,limelight.LimelightAlign(drivetrain,-1).withTimeout(1.5));
         NamedCommands.registerCommand("CENTERlimelightAlign", limelight.LimelightAlign(drivetrain, 0).withTimeout(1.5));
 
-        NamedCommands.registerCommand("spitCoral" ,coral.Intake().withTimeout(1));
+        NamedCommands.registerCommand("spitCoral" ,coral.IntakeAutoSpeed().withTimeout(1));
 
         NamedCommands.registerCommand("goToL1" ,elevator.goToElevatorStow().withTimeout(0.5));
         NamedCommands.registerCommand("goToL2" ,elevator.goToElevatorL2().withTimeout(0.5));
