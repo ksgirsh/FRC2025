@@ -12,6 +12,7 @@ import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Joystick;
@@ -23,8 +24,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-
-
 //subsystems imports
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -33,6 +32,7 @@ import frc.robot.subsystems.RoboSingSubsytem;
 import frc.robot.subsystems.LimelightAlignment;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.AlgaeGroundtake;
+import frc.robot.subsystems.Dealgaefier;
 
 
 
@@ -42,7 +42,11 @@ public class RobotContainer {
 
     //syom auto heading
     private double targetHeadingReef = 0; // in radians
-    private double targetHeadingIntake = 0;
+    private double targetHeadingIntake = 2.2 +Math.PI;
+
+    //multipleis the pov robot oriented to invert which side if front (only robot oriented, feild centric front should stay the same throughout the match)
+    //should always be 1 or -1
+    private double roboOrientedInverter = 1;
 
 
     /* Setting up bindings for necessary control of the swerve drive platform */
@@ -104,9 +108,12 @@ public class RobotContainer {
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     public final Elevator elevator = Elevator.getInstance();
+    private final Coral coral = Coral.getInstance();
+    private final Dealgaefier dealgaefier = Dealgaefier.getInstance();
+
     public final AlgaeGroundtake algaeGroundtake = AlgaeGroundtake.getInstance();
     public final LimelightAlignment limelight = new LimelightAlignment();
-    private final Coral coral = Coral.getInstance();
+    
 
 
 
@@ -118,11 +125,26 @@ public class RobotContainer {
     private final SendableChooser<Command> autoChooser;
 
     public RobotContainer() {
+        
+
+        
+        NamedCommands.registerCommand("LEFTlimelightAlign" ,limelight.LimelightAlign(drivetrain,1).withTimeout(1.5));
+        NamedCommands.registerCommand("RIGHTlimelightAlign" ,limelight.LimelightAlign(drivetrain,-1).withTimeout(1.5));
+        NamedCommands.registerCommand("CENTERlimelightAlign", limelight.LimelightAlign(drivetrain, 0).withTimeout(1.5));
+
+        NamedCommands.registerCommand("spitCoral" ,coral.IntakeAutoSpeed().withTimeout(1));
+
+        NamedCommands.registerCommand("goToL1" ,elevator.goToElevatorStow().withTimeout(0.5));
+        NamedCommands.registerCommand("goToL2" ,elevator.goToElevatorL2().withTimeout(0.5));
+        NamedCommands.registerCommand("goToL3" ,elevator.goToElevatorL3().withTimeout(0.5));
+        NamedCommands.registerCommand("goToL4" ,elevator.goToElevatorL4().withTimeout(0.5));
+
+
         autoChooser = AutoBuilder.buildAutoChooser("Tests");
         SmartDashboard.putData("Auto Mode", autoChooser);
         configureBindings();
     }
-
+    
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
@@ -149,17 +171,21 @@ public class RobotContainer {
 
         // robot oriented drive forwad and backward, also left right
         driveJoystick.pov(0).whileTrue(drivetrain.applyRequest(() ->
-            forwardStraight.withVelocityX(-0.5).withVelocityY(0))
+            forwardStraight.withVelocityX(0.5*roboOrientedInverter).withVelocityY(0))
         );
         driveJoystick.pov(90).whileTrue(drivetrain.applyRequest(() ->
-            forwardStraight.withVelocityX(0).withVelocityY(0.5))
+            forwardStraight.withVelocityX(0).withVelocityY(-0.5*roboOrientedInverter))
         );
         driveJoystick.pov(180).whileTrue(drivetrain.applyRequest(() ->
-            forwardStraight.withVelocityX(0.5).withVelocityY(0))
+            forwardStraight.withVelocityX(-0.5*roboOrientedInverter).withVelocityY(0))
         );
         driveJoystick.pov(270).whileTrue(drivetrain.applyRequest(() ->
-        forwardStraight.withVelocityX(0).withVelocityY(-0.5))
+        forwardStraight.withVelocityX(0).withVelocityY(0.5*roboOrientedInverter))
         );
+
+        //invert the pov controls, useful for when algea groundtake
+        //the "back" button is in the middle of the controller slightly on the right
+        driveJoystick.back().onTrue(drivetrain.runOnce(() -> {roboOrientedInverter *=-1;}));
 
         //resets which which way is considered forward
         //the "back" button is in the middle of the controller slightly on the left
@@ -216,6 +242,17 @@ public class RobotContainer {
                 .withTargetDirection(new Rotation2d(targetHeadingIntake)))
         );
 
+        //left trigger also go to fetal position (resests everythig to be compact)
+        driveJoystick.leftTrigger().whileTrue(
+            elevator.goToElevatorStow()
+        );
+        driveJoystick.leftTrigger().whileTrue(
+            algaeGroundtake.goToPivotIn()
+        );
+        driveJoystick.leftTrigger().whileTrue(
+            dealgaefier.FlopIn()
+        );
+
         // Auto heading insta set and apply for four cardinal directions
         driveJoystick.y().whileTrue(
             drivetrain.applyRequest(() -> 
@@ -247,7 +284,8 @@ public class RobotContainer {
         driveJoystick.leftBumper().onTrue(limelight.setYaw(drivetrain.getPigeon2().getYaw().getValueAsDouble()));
         driveJoystick.leftBumper().whileTrue(limelight.LimelightAlign(drivetrain, true));
 
-        //TODO make right bumper button allign to right reef branch 
+        //align to right reef branch
+        driveJoystick.rightBumper().whileTrue(limelight.LimelightAlign(drivetrain, -1));
 
 
 /*---------------------------------- operator joystick and button board stuff----------------------------------*/
@@ -269,15 +307,21 @@ public class RobotContainer {
 
 //coral controls
         operatorJoystick.y().whileTrue(
-            coral.Intake() // runs the intake
+            coral.IntakeAutoSpeed() // runs the coral speed control depending on elevator height
         );
+
         operatorJoystick.a().whileTrue(
-            coral.LaserIntake() // runs the reverse intake
-        );
-        operatorJoystick.b().whileTrue(
-            coral.coralSpeed() // runs the coral speed control depending on elevator height
+            coral.IntakeReverse() // runs the reverse intake
         );
         coral.setDefaultCommand(coral.stopIntake()); //whenever no button is pressed, intake doesnt spin
+
+// dealgifier controls
+        operatorJoystick.b().whileTrue(
+            dealgaefier.FlopOut() // flops out the dealgaefier and start spinning lil thing at the end  
+        );
+        operatorJoystick.x().whileTrue(
+            dealgaefier.FlopIn() // flops in the dealgaefier and stops spinning
+        );
 
 
 //algea groundtake controls
@@ -297,14 +341,26 @@ public class RobotContainer {
         algaeGroundtake.setDefaultCommand(algaeGroundtake.StopIntake());
 
 
-//right bumper everythings resests to be compact
-        operatorJoystick.rightBumper().whileTrue(
+// go to fetal position (resests everythig to be compact)
+        operatorJoystick.leftTrigger().whileTrue(
             elevator.goToElevatorStow()
         );
-        operatorJoystick.rightBumper().whileTrue(
+        operatorJoystick.leftTrigger().whileTrue(
             algaeGroundtake.goToPivotIn()
         );
-        
+        operatorJoystick.leftTrigger().whileTrue(
+            dealgaefier.FlopIn()
+        );
+
+//drivey stuff that opp(operator) can do
+
+        //opp can also invert the pov controls, useful for when algea groundtake
+        //the "back" button is in the middle of the controller slightly on the right
+        operatorJoystick.back().onTrue(drivetrain.runOnce(() -> {roboOrientedInverter *=-1;}));
+
+        //opp can also limelight allign
+        operatorJoystick.leftBumper().whileTrue(limelight.LimelightAlign(drivetrain, 1));
+        operatorJoystick.rightBumper().whileTrue(limelight.LimelightAlign(drivetrain, -1));
 
 
 
@@ -312,9 +368,13 @@ public class RobotContainer {
 
 
 
+        
 
 
-        // ong we dont need this shit wtf is breaking 
+
+
+
+        // ong we dont need this shit wtf is "breaking"
 
         // joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
         // joystick.b().whileTrue(drivetrain.applyRequest(() ->

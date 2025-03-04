@@ -63,6 +63,32 @@ public static class Elevator {
 
   }
 
+  public static class Dealgaefier {
+    public static final int kPivotMotorId = 5;
+    public static final int kIntakeMotorId = 8;
+
+    public static final double kP = 0.15;
+    public static final double kI = 0;
+    public static final double kD = 0.0;
+    public static final double kIZone = 5.0;
+    public static final double kG = 0.5;
+
+    //speed of pivot
+    public static final double kMaxVelocity = 20;
+    public static final double kMaxAcceleration = 20;
+
+    //speed of intake
+    public static final double kIntakeSpeed = 0.3;
+    public static final double kReverseSpeed = -0.3;
+
+    public static final int kMaxCurrent = 40;
+    //tune later
+    public static final double kInRotations = 0;
+    public static final double kOutRotations = 0.5;
+
+
+  }
+
   
 
   public static class Coral {
@@ -80,39 +106,39 @@ public static class Elevator {
     public static final double kIZone = 0;
 
     public static final double kIntakeSpeed = 0.3;
-    public static final double kReverseSpeed = -0.3;
+    public static final double kReverseSpeed = -0.05;
     public static final double kL1Speed = 0.4;
     public static final double kL24Speed = 0.4;
     public static final double kIndexSpeed = 0.1;
     public static final double kSpeedDifference = kL1Speed * 0.5;
 
-    public static final double kStowRPM = 0.3;
-    public static final double kStowSpeedDiff = 0.2; // should be higher than L2-L4
+    public static final double kStowRPM = 0.2;
+    public static final double kStowSpeedDiff = 0.15; // should be higher than L2-L4
 
     public static final double kL2RPM = 0.1;
-    public static final double kL2SpeedDiff = 0.05;
+    public static final double kL2SpeedDiff = 0;
 
     public static final double kL3RPM = 0.1;
-    public static final double kL3SpeedDiff = 0.05;
+    public static final double kL3SpeedDiff = 0;
 
     public static final double kL4RPM = 0.1;
-    public static final double kL4SpeedDiff = 0.05;
+    public static final double kL4SpeedDiff = 0;
 
     public static final double kA1RPM = 0.1;
-    public static final double kA1SpeedDiff = 0.05;
+    public static final double kA1SpeedDiff = 0;
 
     public static final double kA2RPM = 0.1;
-    public static final double kA2SpeedDiff = 0.05;
+    public static final double kA2SpeedDiff = 0;
 
     public static final double kDefaultRPM = 0.1;
-    public static final double kDefaultSpeedDiff = 0.05;
+    public static final double kDefaultSpeedDiff = 0;
   }
 
   public static class LimelightAlignment {
     //robot centric left right ofset(meters), if want to align right in front of april tag this would be 0.
-    public static final double kXofset = .2;
+    public static final double kXofset = .171;
     //robot centric forward backward ofset(meters), bassically how far away from the tag you want to be after ur allign.
-    public static final double kYofset = 1.0;
+    public static final double kYofset = 0.1;
     public static final double kLeftoffset = 1.0;
     public static final double kRightoffset = -1.0;
   }

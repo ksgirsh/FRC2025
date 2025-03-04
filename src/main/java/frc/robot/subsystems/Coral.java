@@ -146,6 +146,7 @@ public class Coral extends SubsystemBase {
   }
 
   private void intake() {
+    System.out.println(laser.isPressed());
     mPeriodicIO.speed_diff = 0.0;
     mPeriodicIO.rpm = Constants.Coral.kIntakeSpeed;
     mPeriodicIO.state = IntakeState.INTAKE;
@@ -163,11 +164,11 @@ public class Coral extends SubsystemBase {
     mPeriodicIO.state = IntakeState.NONE;
   }
 
-  public Command coralSpeed() {
-    return run(() -> coralSpeedControl());
+  public Command IntakeAutoSpeed() {
+    return run(() -> intakeAutoSpeed());
   }
 
-  private void coralSpeedControl() {
+  private void intakeAutoSpeed() {
     if (Elevator.publicState == ElevatorState.STOW) {
       setspeed(Constants.Coral.kStowRPM, Constants.Coral.kStowSpeedDiff);
     } else if (Elevator.publicState == ElevatorState.L2) {
@@ -185,12 +186,23 @@ public class Coral extends SubsystemBase {
     }
   }
 
+  public Command IntakeReverse(){
+    return run(() -> reverse());
+  }
+
+  private void reverse() {
+    mPeriodicIO.speed_diff = 0.0;
+    mPeriodicIO.rpm = Constants.Coral.kReverseSpeed;
+    mPeriodicIO.state = IntakeState.REVERSE;
+  }
+
 
   public Command LaserIntake(){
     return run(()->laserIntake());
   }
 
   private void laserIntake(){
+    System.out.println(laser.isPressed());
     if(laser.isPressed() || extend){
       if(!laser.isPressed()){
         if(!extend){
@@ -213,12 +225,6 @@ public class Coral extends SubsystemBase {
 
 
   //-- not useful shit-----------
-
-  public void reverse() {
-    mPeriodicIO.speed_diff = 0.0;
-    mPeriodicIO.rpm = Constants.Coral.kReverseSpeed;
-    mPeriodicIO.state = IntakeState.REVERSE;
-  }
 
   public Command idle(){
     return run(() -> index());

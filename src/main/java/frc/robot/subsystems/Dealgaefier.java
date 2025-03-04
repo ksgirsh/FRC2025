@@ -18,25 +18,22 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.util.Color;
 import frc.robot.Constants;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import frc.robot.subsystems.Elevator.ElevatorState;
 
-
-public class AlgaeGroundtake extends SubsystemBase {
-  /** Creates a new AlgaeGroundtake. */
-  private static AlgaeGroundtake mInstance;
+public class Dealgaefier extends SubsystemBase {
+  /** Creates a new dealgaefier. */
+  private static Dealgaefier mInstance;
 
   private PeriodicIO mPeriodicIO;
 
   //get instance method
-  public static AlgaeGroundtake getInstance() {
+  public static Dealgaefier getInstance() {
     if (mInstance == null) {
-      mInstance = new AlgaeGroundtake();
+      mInstance = new Dealgaefier();
     }
     return mInstance;
   }
@@ -54,14 +51,14 @@ public class AlgaeGroundtake extends SubsystemBase {
 
   
 
-  private AlgaeGroundtake() {
-    super("AlgaeGroundtake");
+  private Dealgaefier() {
+    super("dealgaefier");
     mPeriodicIO = new PeriodicIO();
 
     SparkMaxConfig pivotConfig = new SparkMaxConfig();
     SparkMaxConfig intakeConfig = new SparkMaxConfig();
 
-    mIntakeMotor = new SparkMax(Constants.AlgaeGroundtake.kIntakeMotorId, MotorType.kBrushless);
+    mIntakeMotor = new SparkMax(Constants.Dealgaefier.kIntakeMotorId, MotorType.kBrushless);
 
     mIntakeMotor.configure(
       intakeConfig,
@@ -69,16 +66,16 @@ public class AlgaeGroundtake extends SubsystemBase {
       PersistMode.kPersistParameters);
 
     pivotConfig.closedLoop
-        .pid(Constants.AlgaeGroundtake.kP, Constants.AlgaeGroundtake.kI, Constants.AlgaeGroundtake.kD)
-        .iZone(Constants.AlgaeGroundtake.kIZone);
+        .pid(Constants.Dealgaefier.kP, Constants.Dealgaefier.kI, Constants.Dealgaefier.kD)
+        .iZone(Constants.Dealgaefier.kIZone);
 
-    pivotConfig.smartCurrentLimit(Constants.AlgaeGroundtake.kMaxCurrent);
+    pivotConfig.smartCurrentLimit(Constants.Dealgaefier.kMaxCurrent);
 
     pivotConfig.idleMode(IdleMode.kBrake);
     pivotConfig.limitSwitch.reverseLimitSwitchEnabled(true);
 
     // pivot motor
-    mPivotMotor = new SparkMax(Constants.AlgaeGroundtake.kPivotMotorId, MotorType.kBrushless);
+    mPivotMotor = new SparkMax(Constants.Dealgaefier.kPivotMotorId, MotorType.kBrushless);
     mPivotEncoder = mPivotMotor.getEncoder();
     mPivotPIDController = mPivotMotor.getClosedLoopController();
     mPivotMotor.configure(
@@ -88,8 +85,8 @@ public class AlgaeGroundtake extends SubsystemBase {
 
     mProfile = new TrapezoidProfile(
         new TrapezoidProfile.Constraints(
-            Constants.AlgaeGroundtake.kMaxVelocity,
-            Constants.AlgaeGroundtake.kMaxAcceleration));
+            Constants.Dealgaefier.kMaxVelocity,
+            Constants.Dealgaefier.kMaxAcceleration));
   }
 
 
@@ -143,7 +140,7 @@ public class AlgaeGroundtake extends SubsystemBase {
           mCurState.position,
           SparkBase.ControlType.kPosition,
           ClosedLoopSlot.kSlot0,
-          Constants.AlgaeGroundtake.kG,
+          Constants.Dealgaefier.kG,
           ArbFFUnits.kVoltage);
     } else {
       mCurState.position = mPivotEncoder.getPosition();
@@ -174,7 +171,7 @@ public class AlgaeGroundtake extends SubsystemBase {
 
   private void intake() {
     mPeriodicIO.intake_speed_diff = 0.0;
-      mPeriodicIO.intake_rpm = Constants.AlgaeGroundtake.kIntakeSpeed;
+      mPeriodicIO.intake_rpm = Constants.Dealgaefier.kIntakeSpeed;
       mPeriodicIO.istate = IntakeState.INTAKE;
   }
 
@@ -184,7 +181,7 @@ public class AlgaeGroundtake extends SubsystemBase {
 
   private void reverse() {
     mPeriodicIO.intake_speed_diff = 0.0;
-    mPeriodicIO.intake_rpm = Constants.AlgaeGroundtake.kReverseSpeed;
+    mPeriodicIO.intake_rpm = Constants.Dealgaefier.kReverseSpeed;
     mPeriodicIO.istate = IntakeState.REVERSE;
   }
 
@@ -200,26 +197,34 @@ public class AlgaeGroundtake extends SubsystemBase {
 
 
 
-  //pivot commands 
-  public Command goToPivotIn() {
+  //flop commands 
+  public Command FlopIn() {
     return run(() -> gotopivotin());
   }
 
   private void gotopivotin() {
     mPeriodicIO.is_groundtake_pos_control = true;
-    mPeriodicIO.pivot_target= Constants.AlgaeGroundtake.kInRotations;
+    mPeriodicIO.pivot_target= Constants.Dealgaefier.kInRotations;
     mPeriodicIO.pstate = PivotState.IN;
+
+    mPeriodicIO.intake_speed_diff = 0.0;
+    mPeriodicIO.intake_rpm = 0.0;
+    mPeriodicIO.istate = IntakeState.NONE;
   }
 
-  public Command goToPivotOut() {
+  public Command FlopOut() {
     return run(() -> gotopivotout());
     
   }
 
   private void gotopivotout() {
     mPeriodicIO.is_groundtake_pos_control = true;
-    mPeriodicIO.pivot_target= Constants.AlgaeGroundtake.kOutRotations;
+    mPeriodicIO.pivot_target= Constants.Dealgaefier.kOutRotations;
     mPeriodicIO.pstate = PivotState.OUT;
+
+    mPeriodicIO.intake_speed_diff = 0.0;
+    mPeriodicIO.intake_rpm = Constants.Dealgaefier.kIntakeSpeed;
+    mPeriodicIO.istate = IntakeState.INTAKE;
   }
 
 
