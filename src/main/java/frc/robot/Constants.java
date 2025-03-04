@@ -113,6 +113,8 @@ public static class Elevator {
     public static final double kXofset = .2;
     //robot centric forward backward ofset(meters), bassically how far away from the tag you want to be after ur allign.
     public static final double kYofset = 1.0;
+    public static final double kLeftoffset = 1.0;
+    public static final double kRightoffset = -1.0;
   }
 
 }

@@ -245,7 +245,7 @@ public class RobotContainer {
 
         // Limelight alignment
         driveJoystick.leftBumper().onTrue(limelight.setYaw(drivetrain.getPigeon2().getYaw().getValueAsDouble()));
-        driveJoystick.leftBumper().whileTrue(limelight.LimelightAlign(drivetrain));
+        driveJoystick.leftBumper().whileTrue(limelight.LimelightAlign(drivetrain, true));
 
         //TODO make right bumper button allign to right reef branch 
 
