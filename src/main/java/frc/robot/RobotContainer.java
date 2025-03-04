@@ -128,9 +128,9 @@ public class RobotContainer {
         
 
         
-        NamedCommands.registerCommand("LEFTlimelightAlign" ,limelight.LimelightAlign(drivetrain,1).withTimeout(1.5));
-        NamedCommands.registerCommand("RIGHTlimelightAlign" ,limelight.LimelightAlign(drivetrain,-1).withTimeout(1.5));
-        NamedCommands.registerCommand("CENTERlimelightAlign", limelight.LimelightAlign(drivetrain, 0).withTimeout(1.5));
+        NamedCommands.registerCommand("LEFTlimelightAlign" ,limelight.LimelightAlign(drivetrain, true).withTimeout(1.5));
+        NamedCommands.registerCommand("RIGHTlimelightAlign" ,limelight.LimelightAlign(drivetrain,false).withTimeout(1.5));
+
 
         NamedCommands.registerCommand("spitCoral" ,coral.IntakeAutoSpeed().withTimeout(1));
 
@@ -285,7 +285,7 @@ public class RobotContainer {
         driveJoystick.leftBumper().whileTrue(limelight.LimelightAlign(drivetrain, true));
 
         //align to right reef branch
-        driveJoystick.rightBumper().whileTrue(limelight.LimelightAlign(drivetrain, -1));
+        driveJoystick.rightBumper().whileTrue(limelight.LimelightAlign(drivetrain, false));
 
 
 /*---------------------------------- operator joystick and button board stuff----------------------------------*/
@@ -359,8 +359,8 @@ public class RobotContainer {
         operatorJoystick.start().onTrue(drivetrain.runOnce(() -> {roboOrientedInverter *=-1;}));
 
         //opp can also limelight allign
-        operatorJoystick.leftBumper().whileTrue(limelight.LimelightAlign(drivetrain, 1));
-        operatorJoystick.rightBumper().whileTrue(limelight.LimelightAlign(drivetrain, -1));
+        operatorJoystick.leftBumper().whileTrue(limelight.LimelightAlign(drivetrain, true));
+        operatorJoystick.rightBumper().whileTrue(limelight.LimelightAlign(drivetrain, false));
 
 
 
