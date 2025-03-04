@@ -185,7 +185,7 @@ public class RobotContainer {
 
         //invert the pov controls, useful for when algea groundtake
         //the "back" button is in the middle of the controller slightly on the right
-        driveJoystick.back().onTrue(drivetrain.runOnce(() -> {roboOrientedInverter *=-1;}));
+        driveJoystick.start().onTrue(drivetrain.runOnce(() -> {roboOrientedInverter *=-1;}));
 
         //resets which which way is considered forward
         //the "back" button is in the middle of the controller slightly on the left
@@ -356,7 +356,7 @@ public class RobotContainer {
 
         //opp can also invert the pov controls, useful for when algea groundtake
         //the "back" button is in the middle of the controller slightly on the right
-        operatorJoystick.back().onTrue(drivetrain.runOnce(() -> {roboOrientedInverter *=-1;}));
+        operatorJoystick.start().onTrue(drivetrain.runOnce(() -> {roboOrientedInverter *=-1;}));
 
         //opp can also limelight allign
         operatorJoystick.leftBumper().whileTrue(limelight.LimelightAlign(drivetrain, 1));
