@@ -138,9 +138,9 @@ public static class Elevator {
     //robot centric left right ofset(meters), if want to align right in front of april tag this would be 0.
     public static final double kXofset = .171;
     //robot centric forward backward ofset(meters), bassically how far away from the tag you want to be after ur allign.
-    public static final double kYofset = 0.1;
-    public static final double kLeftoffset = 1.0;
-    public static final double kRightoffset = -1.0;
+    public static final double kYofset = 0.4;
+    public static final double kLeftoffset = .171;
+    public static final double kRightoffset = -.2;
   }
 
 }
