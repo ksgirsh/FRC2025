@@ -149,6 +149,7 @@ public static class Elevator {
     public static final double kLimelightAllignTime = 1.5;
     public static final double kDriveForwardTime = .75;
     public static final double kSetHeadingTime =  1;
+    public static final double kDealgFlopInOutTime = .1;
   }
 
 }
