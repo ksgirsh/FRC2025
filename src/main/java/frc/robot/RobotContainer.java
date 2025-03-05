@@ -24,6 +24,9 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+
+import frc.robot.Constants.Auto;
+
 //subsystems imports
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -127,18 +130,43 @@ public class RobotContainer {
     public RobotContainer() {
         
 
-        
-        NamedCommands.registerCommand("LEFTlimelightAlign" ,limelight.LimelightAlign(drivetrain, true).withTimeout(1.5));
-        NamedCommands.registerCommand("RIGHTlimelightAlign" ,limelight.LimelightAlign(drivetrain,false).withTimeout(1.5));
+//path planner named commands
+        NamedCommands.registerCommand("LEFTlimelightAlign" ,limelight.LimelightAlign(drivetrain, true).withTimeout(Constants.Auto.kLimelightAllignTime));
+        NamedCommands.registerCommand("RIGHTlimelightAlign" ,limelight.LimelightAlign(drivetrain,false).withTimeout(Constants.Auto.kLimelightAllignTime));
 
 
-        NamedCommands.registerCommand("spitCoral" ,coral.IntakeAutoSpeed().withTimeout(1));
+        NamedCommands.registerCommand("spitCoral" ,coral.IntakeAutoSpeed().withTimeout(Constants.Auto.kCoralSpinTime));
 
-        NamedCommands.registerCommand("goToL1" ,elevator.goToElevatorStow().withTimeout(0.5));
-        NamedCommands.registerCommand("goToL2" ,elevator.goToElevatorL2().withTimeout(0.5));
-        NamedCommands.registerCommand("goToL3" ,elevator.goToElevatorL3().withTimeout(0.5));
-        NamedCommands.registerCommand("goToL4" ,elevator.goToElevatorL4().withTimeout(0.5));
+        NamedCommands.registerCommand("goToL1" ,elevator.goToElevatorStow().withTimeout(Constants.Auto.kElevatorTime));
+        NamedCommands.registerCommand("goToL2" ,elevator.goToElevatorL2().withTimeout(Constants.Auto.kElevatorTime));
+        NamedCommands.registerCommand("goToL3" ,elevator.goToElevatorL3().withTimeout(Constants.Auto.kElevatorTime));
+        NamedCommands.registerCommand("goToL4" ,elevator.goToElevatorL4().withTimeout(Constants.Auto.kElevatorTime));
+        NamedCommands.registerCommand("driveForward" ,drivetrain.applyRequest(() -> forwardStraight.withVelocityX(0.5).withVelocityY(0)).withTimeout(Constants.Auto.kDriveForwardTime));
 
+        NamedCommands.registerCommand("DealgFlopOut", dealgaefier.FlopOut().withTimeout(Constants.Auto.kDealgFlopInOutTime));
+        NamedCommands.registerCommand("DealgFlopIn", dealgaefier.FlopIn().withTimeout(Constants.Auto.kDealgFlopInOutTime));
+
+        //reef heading named commands
+        NamedCommands.registerCommand("setHeading3  ",drivetrain.applyRequest(() -> 
+                headingRequest.withVelocityX(-driveJoystick.getLeftY() * MaxSpeed)
+                .withVelocityY(-driveJoystick.getLeftX() * MaxSpeed)
+                .withTargetDirection(new Rotation2d(2 * Math.PI / 3)))
+            .withTimeout(Constants.Auto.kSetHeadingTime)
+        );
+        NamedCommands.registerCommand("setHeading4",drivetrain.applyRequest(() -> 
+                headingRequest.withVelocityX(-driveJoystick.getLeftY() * MaxSpeed)
+                .withVelocityY(-driveJoystick.getLeftX() * MaxSpeed)
+                .withTargetDirection(new Rotation2d(Math.PI)))
+            .withTimeout(Constants.Auto.kSetHeadingTime)
+        );
+        NamedCommands.registerCommand("setHeading5",drivetrain.applyRequest(() -> 
+                headingRequest.withVelocityX(-driveJoystick.getLeftY() * MaxSpeed)
+                .withVelocityY(-driveJoystick.getLeftX() * MaxSpeed)
+                .withTargetDirection(new Rotation2d(4 * Math.PI / 3)))
+            .withTimeout(Constants.Auto.kSetHeadingTime)
+        );
+
+ 
 
         autoChooser = AutoBuilder.buildAutoChooser("Tests");
         SmartDashboard.putData("Auto Mode", autoChooser);
@@ -285,6 +313,7 @@ public class RobotContainer {
         driveJoystick.leftBumper().whileTrue(limelight.LimelightAlign(drivetrain, true));
 
         //align to right reef branch
+        driveJoystick.rightBumper().onTrue(limelight.setYaw(drivetrain.getPigeon2().getYaw().getValueAsDouble()));
         driveJoystick.rightBumper().whileTrue(limelight.LimelightAlign(drivetrain, false));
 
 

@@ -7,25 +7,31 @@
         {
           "type": "path",
           "data": {
-            "pathName": "WL-R4"
+            "pathName": "WL-R5"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "LEFTlimelightAlign"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "R4;postallignscore"
+            "name": "RIGHTlimelightAlign"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "goToL3"
+            "name": "goToL2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "setHeading5"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "driveForward"
           }
         },
         {
@@ -37,7 +43,7 @@
         {
           "type": "named",
           "data": {
-            "name": "spitCoral"
+            "name": "spinCoralIntake"
           }
         }
       ]

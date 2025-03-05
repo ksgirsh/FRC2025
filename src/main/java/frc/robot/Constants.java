@@ -84,7 +84,7 @@ public static class Elevator {
     public static final int kMaxCurrent = 40;
     //tune later
     public static final double kInRotations = 0;
-    public static final double kOutRotations = 0.5;
+    public static final double kOutRotations = 1.5;
 
 
   }
@@ -141,6 +141,14 @@ public static class Elevator {
     public static final double kYofset = 0.4;
     public static final double kLeftoffset = .171;
     public static final double kRightoffset = -.2;
+  }
+
+  public static class Auto{
+    public static final double kCoralSpinTime = .5; // time in seocnds each command will run for
+    public static final double kElevatorTime = .7;
+    public static final double kLimelightAllignTime = 1.5;
+    public static final double kDriveForwardTime = .75;
+    public static final double kSetHeadingTime =  1;
   }
 
 }
