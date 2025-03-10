@@ -91,11 +91,11 @@ public class LimelightAlignment extends SubsystemBase {
         xSpeed = 0;
       }
 
-      System.out.println("Z: " + cameraPose_TargetSpace.getZ());
-      double yawSpeed = -yawControl.calculate(driveT.getPigeon2().getYaw().getValueAsDouble())  * 0.01;
-      if(yawSpeed < 0.05){
-        yawSpeed = 0;
-      }
+      // System.out.println("Z: " + cameraPose_TargetSpace.getZ());
+      // double yawSpeed = -yawControl.calculate(driveT.getPigeon2().getYaw().getValueAsDouble())  * 0.01;
+      // if(yawSpeed < 0.05){
+      //   yawSpeed = 0;
+      // }
       
       //driveT.applyRequest(() ->
       //  robotCentricRequest.withVelocityX(xSpeed).withVelocityY(ySpeed)
@@ -103,11 +103,9 @@ public class LimelightAlignment extends SubsystemBase {
 
       // if tx or ty is not 0, then move
       
-      driveT.setControl(new SwerveRequest.RobotCentric().withVelocityX(xSpeed).withVelocityY(ySpeed).withRotationalRate(yawSpeed));
+      driveT.setControl(new SwerveRequest.RobotCentric().withVelocityX(xSpeed).withVelocityY(ySpeed).withRotationalRate(0));
       
       
-      //System.out.println("X Speed: " + xSpeed + " Y Speed: " + ySpeed + " X Pos: " + cameraPose_TargetSpace.getX() + " Y Pos: " + cameraPose_TargetSpace.getY());
-
   }
 
   @Override
@@ -117,6 +115,10 @@ public class LimelightAlignment extends SubsystemBase {
     double ty = LimelightHelpers.getTY("");  // Vertical offset from crosshair to target in degrees
     double ta = LimelightHelpers.getTA("");  // Target area (0% to 100% of image)
     boolean tv = LimelightHelpers.getTV(""); // Do you have a valid target?
+
+    // Pose3d cameraPose_TargetSpace = LimelightHelpers.getCameraPose3d_TargetSpace(""); // Camera's pose relative to tag (should use Robot's pose in the future)
+
+    // System.out.println("X Speed: " + xSpeed + " Y Speed: " + ySpeed + " X Pos: " + cameraPose_TargetSpace.getX() + " Y Pos: " + cameraPose_TargetSpace.getY());
 
     // System.out.println("tx: " + tx + " ty: " + ty + " ta: " + ta + " tv: " + tv);
   }

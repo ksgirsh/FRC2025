@@ -7,19 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "WL-R5"
+            "pathName": "RWL-R3"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "RIGHTlimelightAlign"
+            "name": "LEFTlimelightAlign"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "goToL2"
+            "name": "goToL4"
           }
         },
         {
@@ -31,7 +31,7 @@
         {
           "type": "named",
           "data": {
-            "name": "setHeading5"
+            "name": "setHeading3"
           }
         },
         {

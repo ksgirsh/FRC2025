@@ -8,23 +8,11 @@
         "layouts": [],
         "containers": [
           {
-            "title": "USB Camera 0",
-            "x": 256.0,
-            "y": 0.0,
-            "width": 256.0,
-            "height": 256.0,
-            "type": "Camera Stream",
-            "properties": {
-              "topic": "/CameraPublisher/USB Camera 0",
-              "period": 0.06
-            }
-          },
-          {
             "title": "limelight",
             "x": 0.0,
             "y": 0.0,
-            "width": 256.0,
-            "height": 256.0,
+            "width": 384.0,
+            "height": 384.0,
             "type": "Camera Stream",
             "properties": {
               "topic": "/CameraPublisher/limelight",
@@ -33,9 +21,9 @@
           },
           {
             "title": "Yaw",
-            "x": 0.0,
-            "y": 256.0,
-            "width": 256.0,
+            "x": 384.0,
+            "y": 128.0,
+            "width": 384.0,
             "height": 256.0,
             "type": "Radial Gauge",
             "properties": {
@@ -53,21 +41,9 @@
             }
           },
           {
-            "title": "USB Camera 1",
-            "x": 512.0,
+            "title": "Match Time",
+            "x": 768.0,
             "y": 0.0,
-            "width": 256.0,
-            "height": 256.0,
-            "type": "Camera Stream",
-            "properties": {
-              "topic": "/CameraPublisher/USB Camera 1",
-              "period": 0.06
-            }
-          },
-          {
-            "title": "matchTime",
-            "x": 256.0,
-            "y": 256.0,
             "width": 256.0,
             "height": 128.0,
             "type": "Match Time",
@@ -83,7 +59,7 @@
           {
             "title": "Auto Mode",
             "x": 768.0,
-            "y": 0.0,
+            "y": 128.0,
             "width": 256.0,
             "height": 128.0,
             "type": "ComboBox Chooser",
@@ -94,10 +70,10 @@
             }
           },
           {
-            "title": "voltage",
-            "x": 768.0,
-            "y": 128.0,
-            "width": 256.0,
+            "title": "Battery Voltage",
+            "x": 384.0,
+            "y": 0.0,
+            "width": 384.0,
             "height": 128.0,
             "type": "Voltage View",
             "properties": {
@@ -112,23 +88,20 @@
             }
           },
           {
-            "title": "Field",
-            "x": 512.0,
+            "title": "Targeting AprilTag",
+            "x": 768.0,
             "y": 256.0,
-            "width": 512.0,
-            "height": 256.0,
-            "type": "Field",
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Boolean Box",
             "properties": {
-              "topic": "/SmartDashboard/Field",
+              "topic": "/SmartDashboard/Targeting",
               "period": 0.06,
-              "field_game": "Reefscape",
-              "robot_width": 0.85,
-              "robot_length": 0.85,
-              "show_other_objects": true,
-              "show_trajectories": true,
-              "field_rotation": 0.0,
-              "robot_color": 4294198070,
-              "trajectory_color": 4294967295
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "Checkmark",
+              "false_icon": "X"
             }
           }
         ]

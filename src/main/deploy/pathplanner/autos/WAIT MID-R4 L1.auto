@@ -5,9 +5,15 @@
     "data": {
       "commands": [
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 3.0
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "WL-R5"
+            "pathName": "MID-R4"
           }
         },
         {
@@ -19,7 +25,7 @@
         {
           "type": "named",
           "data": {
-            "name": "goToL2"
+            "name": "goToL1"
           }
         },
         {
@@ -31,7 +37,7 @@
         {
           "type": "named",
           "data": {
-            "name": "setHeading5"
+            "name": "setHeading4"
           }
         },
         {

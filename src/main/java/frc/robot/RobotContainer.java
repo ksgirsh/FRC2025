@@ -142,6 +142,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("goToL3" ,elevator.goToElevatorL3().withTimeout(Constants.Auto.kElevatorTime));
         NamedCommands.registerCommand("goToL4" ,elevator.goToElevatorL4().withTimeout(Constants.Auto.kElevatorTime));
         NamedCommands.registerCommand("driveForward" ,drivetrain.applyRequest(() -> forwardStraight.withVelocityX(0.5).withVelocityY(0)).withTimeout(Constants.Auto.kDriveForwardTime));
+        NamedCommands.registerCommand("driveBackward" ,drivetrain.applyRequest(() -> forwardStraight.withVelocityX(-0.5).withVelocityY(0)).withTimeout(Constants.Auto.kDriveBackwardTime));
 
         NamedCommands.registerCommand("DealgFlopOut", dealgaefier.FlopOut().withTimeout(Constants.Auto.kDealgFlopInOutTime));
         NamedCommands.registerCommand("DealgFlopIn", dealgaefier.FlopIn().withTimeout(Constants.Auto.kDealgFlopInOutTime));
