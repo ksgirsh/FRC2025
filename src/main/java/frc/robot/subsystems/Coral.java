@@ -58,8 +58,9 @@ public class Coral extends SubsystemBase {
     mRightMotor = new SparkMax(Constants.Coral.kRightMotorId, MotorType.kBrushless);
     SparkMaxConfig coralConfig = new SparkMaxConfig();
     extend = false;
-    coralConfig.idleMode(IdleMode.kBrake).apply(new LimitSwitchConfig().forwardLimitSwitchEnabled(false));
+    //coralConfig.idleMode(IdleMode.kBrake).apply(new LimitSwitchConfig().forwardLimitSwitchEnabled(false));
     laser = mLeftMotor.getForwardLimitSwitch();
+    /*
     mLeftMotor.configure(
         coralConfig,
         ResetMode.kResetSafeParameters,
@@ -68,6 +69,7 @@ public class Coral extends SubsystemBase {
         coralConfig,
         ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
+    */
 
     
     laser = mRightMotor.getForwardLimitSwitch();
@@ -196,11 +198,13 @@ public class Coral extends SubsystemBase {
     mPeriodicIO.state = IntakeState.REVERSE;
   }
 
-
+  //No longer uses break beam
+  @Deprecated
   public Command LaserIntake(){
     return run(()->laserIntake());
   }
 
+  @Deprecated
   private void laserIntake(){
     System.out.println(laser.isPressed());
     if(laser.isPressed() || extend){

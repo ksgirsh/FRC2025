@@ -15,6 +15,8 @@ public class Constants {
 public static class Elevator {
     public static final int kElevatorLeftMotorId = 1;
     public static final int kElevatorRightMotorId = 2;
+    //Whatever controller we decide to plug the beambreak into- make sure forward limit switch is disabled
+    public static final int kBeamBreakId = 4;
 
     public static final double kP = 0.15;
     public static final double kI = 0;

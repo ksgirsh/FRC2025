@@ -8,6 +8,7 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkClosedLoopController.ArbFFUnits;
+import com.revrobotics.spark.SparkLimitSwitch;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
@@ -42,6 +43,9 @@ public class Elevator extends SubsystemBase {
   private SparkClosedLoopController mLeftPIDController;
 
   private SparkMax mRightMotor;
+
+  private SparkMax beamBreakController;
+  private SparkLimitSwitch beamBreak;
 
   private TrapezoidProfile mProfile;
   private TrapezoidProfile.State mCurState = new TrapezoidProfile.State();
@@ -84,6 +88,11 @@ public class Elevator extends SubsystemBase {
         new TrapezoidProfile.Constraints(
             Constants.Elevator.kMaxVelocity,
             Constants.Elevator.kMaxAcceleration));
+    
+    beamBreakController = new SparkMax(Constants.Elevator.kBeamBreakId, MotorType.kBrushless);
+    beamBreak = beamBreakController.getForwardLimitSwitch();
+
+    
   }
 
   public enum ElevatorState {
