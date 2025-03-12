@@ -36,7 +36,7 @@ import frc.robot.subsystems.LimelightAlignment;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.AlgaeGroundtake;
 import frc.robot.subsystems.Dealgaefier;
-
+import frc.robot.subsystems.LaserTest;
 
 
 public class RobotContainer {
@@ -122,6 +122,7 @@ public class RobotContainer {
 
     //syom sing intialize
     public final RoboSingSubsytem roboSingSubsytem = new RoboSingSubsytem();
+    public final LaserTest laserTest = new LaserTest();
     // private final RoboSingCommand singCommand = new RoboSingCommand(roboSing);
 
     /* Path follower */
