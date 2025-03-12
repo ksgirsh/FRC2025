@@ -156,4 +156,8 @@ public static class Elevator {
     public static final double kDealgFlopInOutTime = .1;
   }
 
+  public static class LaserTest {
+    public static final double kbeamBreakControllerMotorId = 9;
+  }
+
 }

@@ -12,7 +12,7 @@ public class LaserTest extends SubsystemBase {
     private SparkLimitSwitch beamBreak;
 
     public LaserTest(){
-        beamBreakController = new SparkMax(9, MotorType.kBrushless);
+        beamBreakController = new SparkMax(Constants.LaserTest.kbeamBreakControllerMotorId, MotorType.kBrushless);
         beamBreak = beamBreakController.getForwardLimitSwitch();
     }
 
